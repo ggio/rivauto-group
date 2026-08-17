@@ -149,8 +149,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {/* Quick Theme Editor & Brands Button */}
-            {onOpenThemeEditor && (
+            {/* Quick Theme Editor & Brands Button (Admin Only) */}
+            {isAdmin && onOpenThemeEditor && (
               <button
                 onClick={onOpenThemeEditor}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-2.5 py-0.5 rounded-lg border border-emerald-500 transition flex items-center space-x-1 shadow-2xs"
@@ -161,7 +161,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             )}
 
-            {onOpenManageBrands && (
+            {isAdmin && onOpenManageBrands && (
               <button
                 onClick={onOpenManageBrands}
                 className="bg-sky-700 hover:bg-sky-800 text-white font-bold px-2.5 py-0.5 rounded-lg border border-sky-600 transition flex items-center space-x-1 shadow-2xs"

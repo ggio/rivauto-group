@@ -322,6 +322,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
   }, [isResizingLogo, resizeStartMouseX, resizeStartWidth, currentLogoWidthPx, onUpdateAppearanceSettings]);
 
   const handleMouseDownLogo = (e: React.MouseEvent) => {
+    if (!isAdmin) return;
     const target = e.target as HTMLElement;
     if (
       target.tagName === 'INPUT' ||
@@ -342,6 +343,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
   };
 
   const handleMouseDownResizeLogo = (e: React.MouseEvent) => {
+    if (!isAdmin) return;
     e.preventDefault();
     e.stopPropagation();
     setIsResizingLogo(true);
@@ -350,6 +352,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
   };
 
   const handleMouseDownText = (e: React.MouseEvent) => {
+    if (!isAdmin) return;
     const target = e.target as HTMLElement;
     if (
       target.tagName === 'INPUT' ||
@@ -368,6 +371,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
   };
 
   const handleMouseDownSearch = (e: React.MouseEvent) => {
+    if (!isAdmin) return;
     const target = e.target as HTMLElement;
     if (
       target.tagName === 'INPUT' ||
@@ -911,7 +915,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
             <div 
               onMouseDown={handleMouseDownText}
               className={`max-w-4xl mx-auto space-y-3 relative z-10 ${
-                isDraggingText ? 'cursor-grabbing select-none' : 'cursor-grab'
+                isAdmin ? (isDraggingText ? 'cursor-grabbing select-none' : 'cursor-grab') : ''
               }`}
               style={{
                 transform: `translate3d(${currentTextOffsetX}px, ${currentTextOffsetY}px, 0)`,
@@ -956,7 +960,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
             <div
               onMouseDown={handleMouseDownSearch}
               className={`max-w-2xl mx-auto pt-4 relative z-10 ${
-                isDraggingSearch ? 'cursor-grabbing select-none' : 'cursor-grab'
+                isAdmin ? (isDraggingSearch ? 'cursor-grabbing select-none' : 'cursor-grab') : ''
               }`}
               style={{
                 transform: `translate3d(${currentSearchOffsetX}px, ${currentSearchOffsetY}px, 0)`,
