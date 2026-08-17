@@ -21,7 +21,15 @@ import { LuxorPart, VehicleSelection, BrandItem } from './types/catalog';
 import { CmsPageData } from './types/cms';
 import { SiteAppearanceSettings, DEFAULT_APPEARANCE_SETTINGS, WholesaleLead } from './types/theme';
 import { savePersistentData, syncLoadPersistentData, loadPersistentData } from './lib/persistentStorage';
+import { INITIAL_FULL_BACKUP_DATA } from './data/initialData';
 import { Wrench, ChevronRight, Plus, Trash2, RefreshCw, Upload, ShieldAlert, Sparkles, Building2, Users } from 'lucide-react';
+
+const BACKUP_THEME = { ...DEFAULT_APPEARANCE_SETTINGS, ...((INITIAL_FULL_BACKUP_DATA.themeSettings || INITIAL_FULL_BACKUP_DATA.rivauto_theme_settings || {}) as SiteAppearanceSettings) };
+const BACKUP_PARTS = (INITIAL_FULL_BACKUP_DATA.luxor_parts_list && INITIAL_FULL_BACKUP_DATA.luxor_parts_list.length > 0 ? INITIAL_FULL_BACKUP_DATA.luxor_parts_list : MOCK_PARTS) as LuxorPart[];
+const BACKUP_CATS = (INITIAL_FULL_BACKUP_DATA.luxor_categories && INITIAL_FULL_BACKUP_DATA.luxor_categories.length > 0 ? INITIAL_FULL_BACKUP_DATA.luxor_categories : LUXOR_CATEGORIES) as CategoryItem[];
+const BACKUP_BRANDS = (INITIAL_FULL_BACKUP_DATA.rivauto_brands && INITIAL_FULL_BACKUP_DATA.rivauto_brands.length > 0 ? INITIAL_FULL_BACKUP_DATA.rivauto_brands : INITIAL_BRANDS) as BrandItem[];
+const BACKUP_CMS = (INITIAL_FULL_BACKUP_DATA.rivauto_cms_pages && Object.keys(INITIAL_FULL_BACKUP_DATA.rivauto_cms_pages).length > 0 ? INITIAL_FULL_BACKUP_DATA.rivauto_cms_pages : INITIAL_CMS_PAGES) as Record<string, CmsPageData>;
+
 
 export default function App() {
   const [activeNav, setActiveNav] = useState<'landing' | 'catalog' | 'admin' | 'architecture' | 'quality' | 'ai' | 'about' | 'custom_page'>(() => {
@@ -30,8 +38,8 @@ export default function App() {
 
   // Appearance & Design Customization State
   const [appearanceSettings, setAppearanceSettings] = useState<SiteAppearanceSettings>(() => {
-    const loaded = syncLoadPersistentData('rivauto_theme_settings', DEFAULT_APPEARANCE_SETTINGS);
-    return { ...DEFAULT_APPEARANCE_SETTINGS, ...loaded };
+    const loaded = syncLoadPersistentData('rivauto_theme_settings', BACKUP_THEME);
+    return { ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...loaded };
   });
   const [isThemeEditorOpen, setIsThemeEditorOpen] = useState(false);
   const [isScreenshotsModalOpen, setIsScreenshotsModalOpen] = useState(false);
@@ -43,12 +51,12 @@ export default function App() {
   
   // CMS Pages State (Editable Pages: 1. О компании, 2. Вторая кастомная страница)
   const [cmsPages, setCmsPages] = useState<Record<string, CmsPageData>>(() => {
-    return syncLoadPersistentData('rivauto_cms_pages', INITIAL_CMS_PAGES);
+    return syncLoadPersistentData('rivauto_cms_pages', BACKUP_CMS);
   });
   
   // Brands & Brand Selection State
   const [brandsList, setBrandsList] = useState<BrandItem[]>(() => {
-    return syncLoadPersistentData('rivauto_brands', INITIAL_BRANDS);
+    return syncLoadPersistentData('rivauto_brands', BACKUP_BRANDS);
   });
 
   const [selectedBrandId, setSelectedBrandId] = useState<string>('all');
@@ -69,12 +77,12 @@ export default function App() {
 
   // Local Storage & IndexedDB Persistent Parts Catalog
   const [partsList, setPartsList] = useState<LuxorPart[]>(() => {
-    return syncLoadPersistentData('luxor_parts_list', MOCK_PARTS);
+    return syncLoadPersistentData('luxor_parts_list', BACKUP_PARTS);
   });
 
   // Local Storage & IndexedDB Persistent Categories
   const [categoriesList, setCategoriesList] = useState<CategoryItem[]>(() => {
-    return syncLoadPersistentData('luxor_categories', LUXOR_CATEGORIES);
+    return syncLoadPersistentData('luxor_categories', BACKUP_CATS);
   });
 
   // Asynchronously hydrate from IndexedDB on mount to ensure complete data (including high-res custom images) is loaded
@@ -84,11 +92,11 @@ export default function App() {
     async function hydrateFromIndexedDB() {
       try {
         const [cats, parts, brands, theme, cms, leads] = await Promise.all([
-          loadPersistentData<CategoryItem[]>('luxor_categories', LUXOR_CATEGORIES),
-          loadPersistentData<LuxorPart[]>('luxor_parts_list', MOCK_PARTS),
-          loadPersistentData<BrandItem[]>('rivauto_brands', INITIAL_BRANDS),
-          loadPersistentData<SiteAppearanceSettings>('rivauto_theme_settings', DEFAULT_APPEARANCE_SETTINGS),
-          loadPersistentData<Record<string, CmsPageData>>('rivauto_cms_pages', INITIAL_CMS_PAGES),
+          loadPersistentData<CategoryItem[]>('luxor_categories', BACKUP_CATS),
+          loadPersistentData<LuxorPart[]>('luxor_parts_list', BACKUP_PARTS),
+          loadPersistentData<BrandItem[]>('rivauto_brands', BACKUP_BRANDS),
+          loadPersistentData<SiteAppearanceSettings>('rivauto_theme_settings', BACKUP_THEME),
+          loadPersistentData<Record<string, CmsPageData>>('rivauto_cms_pages', BACKUP_CMS),
           loadPersistentData<WholesaleLead[]>('rivauto_wholesale_leads', []),
         ]);
 
@@ -96,8 +104,8 @@ export default function App() {
           if (cats && Array.isArray(cats) && cats.length > 0) setCategoriesList(cats);
           if (parts && Array.isArray(parts) && parts.length > 0) setPartsList(parts);
           if (brands && Array.isArray(brands) && brands.length > 0) setBrandsList(brands);
-          if (theme) setAppearanceSettings((prev) => ({ ...prev, ...theme }));
-          if (cms) setCmsPages((prev) => ({ ...prev, ...cms }));
+          if (theme) setAppearanceSettings((prev) => ({ ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...prev, ...theme }));
+          if (cms) setCmsPages((prev) => ({ ...BACKUP_CMS, ...prev, ...cms }));
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
         }
