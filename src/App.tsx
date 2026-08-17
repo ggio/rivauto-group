@@ -62,10 +62,23 @@ export default function App() {
   const [selectedBrandId, setSelectedBrandId] = useState<string>('all');
   const [isBrandManagerOpen, setIsBrandManagerOpen] = useState(false);
 
-  // Persist Active Nav
+  // Persist Active Nav & Update Document Title
   useEffect(() => {
     savePersistentData('rivauto_active_nav', activeNav);
-  }, [activeNav]);
+    
+    if (selectedBrandId && selectedBrandId !== 'all') {
+      const brandName = selectedBrandId.toUpperCase();
+      document.title = `${brandName} — Автокомпоненты RIVAUTO GROUP`;
+    } else if (activeNav === 'catalog') {
+      document.title = `Каталог автокомпонентов — RIVAUTO GROUP`;
+    } else if (activeNav === 'about') {
+      document.title = `О компании — RIVAUTO GROUP`;
+    } else if (activeNav === 'custom_page') {
+      document.title = `Партнерам — RIVAUTO GROUP`;
+    } else {
+      document.title = `RIVAUTO GROUP — B2B Портал Автокомпонентов (DEXTRA, KAIDO, KATSUMOTO, LUXOR)`;
+    }
+  }, [activeNav, selectedBrandId]);
   
   // Role State (Guest vs Administrator)
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {
