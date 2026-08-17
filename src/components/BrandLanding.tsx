@@ -547,72 +547,76 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
                 }}
               />
 
-              {/* Floating Controls Bar on Hover */}
-              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-11 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white border border-slate-700/80 rounded-xl px-2.5 py-1 text-[11px] font-mono flex items-center space-x-2 shadow-2xl backdrop-blur-md whitespace-nowrap z-30">
-                <Move className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" title="Перетаскивайте мышью по баннеру" />
-                
-                {/* Opacity Control Slider */}
-                <div className="flex items-center space-x-1 border-x border-slate-700 px-2">
-                  <span className="text-slate-400 text-[10px]">Прозрачность:</span>
-                  <input
-                    type="range"
-                    min="10"
-                    max="100"
-                    step="5"
-                    value={currentLogoOpacity}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value);
-                      setCurrentLogoOpacity(val);
-                      if (onUpdateAppearanceSettings) {
-                        onUpdateAppearanceSettings({ heroLogoOpacity: val });
-                      }
-                    }}
-                    className="w-16 h-1 accent-amber-400 cursor-pointer"
-                  />
-                  <span className="text-amber-300 font-bold w-6 text-right">{currentLogoOpacity}%</span>
-                </div>
+              {/* Floating Controls Bar on Hover (Admin Only) */}
+              {isAdmin && (
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-11 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white border border-slate-700/80 rounded-xl px-2.5 py-1 text-[11px] font-mono flex items-center space-x-2 shadow-2xl backdrop-blur-md whitespace-nowrap z-30">
+                  <Move className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" title="Перетаскивайте мышью по баннеру" />
+                  
+                  {/* Opacity Control Slider */}
+                  <div className="flex items-center space-x-1 border-x border-slate-700 px-2">
+                    <span className="text-slate-400 text-[10px]">Прозрачность:</span>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={currentLogoOpacity}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value);
+                        setCurrentLogoOpacity(val);
+                        if (onUpdateAppearanceSettings) {
+                          onUpdateAppearanceSettings({ heroLogoOpacity: val });
+                        }
+                      }}
+                      className="w-16 h-1 accent-amber-400 cursor-pointer"
+                    />
+                    <span className="text-amber-300 font-bold w-6 text-right">{currentLogoOpacity}%</span>
+                  </div>
 
-                <span className="text-slate-400 text-[10px]">{currentLogoWidthPx}px</span>
+                  <span className="text-slate-400 text-[10px]">{currentLogoWidthPx}px</span>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setLogoUrlInput(appearanceSettings?.heroLogoUrl || '');
-                    setShowLogoUrlModal(true);
-                  }}
-                  className="hover:text-amber-400 text-slate-300 transition flex items-center space-x-1 px-1 py-0.5 rounded hover:bg-slate-800"
-                  title="Изменить URL PNG логотипа"
-                >
-                  <Settings className="w-3.5 h-3.5" />
-                  <span className="text-[10px]">URL</span>
-                </button>
-
-                {(currentLogoOffsetX !== 0 || currentLogoOffsetY !== 0) && (
                   <button
                     type="button"
                     onClick={() => {
-                      setCurrentLogoOffsetX(0);
-                      setCurrentLogoOffsetY(0);
-                      if (onUpdateAppearanceSettings) {
-                        onUpdateAppearanceSettings({ heroLogoOffsetX: 0, heroLogoOffsetY: 0 });
-                      }
+                      setLogoUrlInput(appearanceSettings?.heroLogoUrl || '');
+                      setShowLogoUrlModal(true);
                     }}
-                    className="text-amber-400 hover:underline text-[10px] ml-1"
+                    className="hover:text-amber-400 text-slate-300 transition flex items-center space-x-1 px-1 py-0.5 rounded hover:bg-slate-800"
+                    title="Изменить URL PNG логотипа"
                   >
-                    (0,0)
+                    <Settings className="w-3.5 h-3.5" />
+                    <span className="text-[10px]">URL</span>
                   </button>
-                )}
-              </div>
 
-              {/* Corner Resize Handle */}
-              <div
-                data-resize="true"
-                onMouseDown={handleMouseDownResizeLogo}
-                className="opacity-0 group-hover:opacity-100 transition-opacity absolute -bottom-2 -right-2 w-6 h-6 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full flex items-center justify-center cursor-se-resize shadow-xl z-30"
-                title="Тяните для изменения размера PNG логотипа"
-              >
-                <Maximize2 className="w-3.5 h-3.5 transform rotate-45" />
-              </div>
+                  {(currentLogoOffsetX !== 0 || currentLogoOffsetY !== 0) && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCurrentLogoOffsetX(0);
+                        setCurrentLogoOffsetY(0);
+                        if (onUpdateAppearanceSettings) {
+                          onUpdateAppearanceSettings({ heroLogoOffsetX: 0, heroLogoOffsetY: 0 });
+                        }
+                      }}
+                      className="text-amber-400 hover:underline text-[10px] ml-1"
+                    >
+                      (0,0)
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Corner Resize Handle (Admin Only) */}
+              {isAdmin && (
+                <div
+                  data-resize="true"
+                  onMouseDown={handleMouseDownResizeLogo}
+                  className="opacity-0 group-hover:opacity-100 transition-opacity absolute -bottom-2 -right-2 w-6 h-6 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-full flex items-center justify-center cursor-se-resize shadow-xl z-30"
+                  title="Тяните для изменения размера PNG логотипа"
+                >
+                  <Maximize2 className="w-3.5 h-3.5 transform rotate-45" />
+                </div>
+              )}
             </div>
           </div>
           

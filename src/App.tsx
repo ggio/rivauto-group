@@ -113,11 +113,14 @@ export default function App() {
           }
 
           if (parts && Array.isArray(parts) && parts.length > 0) {
-            const mergedParts = parts.map((p, idx) => ({
-              ...BACKUP_PARTS[idx % BACKUP_PARTS.length],
-              ...p,
-              imageUrl: p.imageUrl || BACKUP_PARTS[idx % BACKUP_PARTS.length]?.imageUrl,
-            }));
+            const mergedParts = parts.map((p, idx) => {
+              const backupMatch = BACKUP_PARTS.find((b) => b.sku === p.sku) || BACKUP_PARTS[idx % BACKUP_PARTS.length];
+              return {
+                ...backupMatch,
+                ...p,
+                imageUrl: backupMatch?.imageUrl || p.imageUrl,
+              };
+            });
             setPartsList(mergedParts);
           } else {
             setPartsList(BACKUP_PARTS);
