@@ -1,0 +1,6 @@
+{
+  "name": "Luxor Automotive Aftermarket B2B",
+  "description": "B2B industrial catalog and technical portal for Luxor automotive spare parts with smart fitment search, OEM cross-references, blueprint technical drawings, mass data import, and database architecture specifications.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
