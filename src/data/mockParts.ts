@@ -2,21 +2,109 @@ import { LuxorPart } from '../types/catalog';
 import { CategoryItem } from '../components/CategoryManagerModal';
 
 export const LUXOR_CATEGORIES: CategoryItem[] = [
-  { id: 'all', name: 'Все категории', slug: 'all', count: 12400 },
-  { id: 'radiators', name: 'Радиаторы', slug: 'radiators', count: 2334, imageType: 'radiator' },
-  { id: 'water-pumps', name: 'Насосы водяные', slug: 'water-pumps', count: 514, imageType: 'waterpump' },
-  { id: 'fans', name: 'Вентиляторы', slug: 'fans', count: 1111, imageType: 'fan' },
-  { id: 'thermostats', name: 'Термостаты', slug: 'thermostats', count: 501, imageType: 'thermostat' },
-  { id: 'cooling-comp', name: 'Компоненты системы охлаждения', slug: 'cooling-comp', count: 713, imageType: 'thermostat' },
-  { id: 'ac-compressors', name: 'Компрессоры кондиционера', slug: 'ac-compressors', count: 424, imageType: 'compressor' },
-  { id: 'ac-comp', name: 'Компоненты системы кондиционирования', slug: 'ac-comp', count: 182, imageType: 'compressor' },
-  { id: 'air-compressors', name: 'Компрессоры воздушные', slug: 'air-compressors', count: 59, imageType: 'compressor' },
-  { id: 'power-steering', name: 'Насосы гидравлические', slug: 'power-steering', count: 133, imageType: 'waterpump' },
-  { id: 'turbo', name: 'Турбокомпрессоры', slug: 'turbo', count: 225, imageType: 'turbo' },
-  { id: 'filtration', name: 'Фильтры', slug: 'filtration', count: 1177, imageType: 'filter' },
-  { id: 'gaskets', name: 'Прокладки двигателя', slug: 'gaskets', count: 416, imageType: 'gasket' },
-  { id: 'engine', name: 'Детали двигателя', slug: 'engine', count: 207, imageType: 'engine' },
-  { id: 'lighting', name: 'Фары и Оптика LUXOR', slug: 'lighting', count: 350, imageType: 'headlight' },
+  {
+    "id": "all",
+    "name": "Все категории",
+    "slug": "all",
+    "count": 12400,
+    "imageUrl": "/assets/site-images/Каталог групп/b7ad3bbd-2a9d-4f4a-942d-8a720700c402.png"
+  },
+  {
+    "id": "radiators",
+    "name": "Двигатель и навесное оборудование",
+    "slug": "radiators",
+    "count": 2334,
+    "imageType": "radiator",
+    "imageUrl": "/assets/site-images/Каталог групп/c0e0da6a-f50b-4db8-aee3-ba6e73091edd.png"
+  },
+  {
+    "id": "water-pumps",
+    "name": "Элементы топливной системы",
+    "slug": "water-pumps",
+    "count": 514,
+    "imageType": "waterpump",
+    "imageUrl": "/assets/site-images/Каталог групп/4f6196da-9590-4d40-9b53-2a3ca8d039ea.png"
+  },
+  {
+    "id": "fans",
+    "name": "Детали подвески",
+    "slug": "fans",
+    "count": 1111,
+    "imageType": "fan",
+    "imageUrl": "/assets/site-images/Каталог групп/5f78c607-af81-4727-afc6-aa49b7b621b6.png"
+  },
+  {
+    "id": "thermostats",
+    "name": "Детали тормозной системы",
+    "slug": "thermostats",
+    "count": 501,
+    "imageType": "thermostat",
+    "imageUrl": "/assets/site-images/Каталог групп/47beceda-4c1e-4e3a-a483-ed96db31f2c7.png"
+  },
+  {
+    "id": "cooling-comp",
+    "name": "Детали трансмиссии",
+    "slug": "cooling-comp",
+    "count": 713,
+    "imageType": "thermostat",
+    "imageUrl": "/assets/site-images/Каталог групп/b4736375-dfaa-4902-8689-1f76e4cc3f60.png"
+  },
+  {
+    "id": "ac-compressors",
+    "name": "Элементы рулевого управления",
+    "slug": "ac-compressors",
+    "count": 424,
+    "imageType": "compressor",
+    "imageUrl": "/assets/site-images/Каталог групп/ec117487-0627-45e3-a1e5-597745bfa625.png"
+  },
+  {
+    "id": "ac-comp",
+    "name": "Система отопления и вентиляции",
+    "slug": "ac-comp",
+    "count": 182,
+    "imageType": "compressor",
+    "imageUrl": "/assets/site-images/Каталог групп/5008be08-29e6-4a5b-aef3-9e6cbe675935.png"
+  },
+  {
+    "id": "air-compressors",
+    "name": "Система охлаждения",
+    "slug": "air-compressors",
+    "count": 59,
+    "imageType": "compressor",
+    "imageUrl": "/assets/site-images/Каталог групп/daced6af-3a3b-44a3-8fd2-0266ad2d4d38.png"
+  },
+  {
+    "id": "power-steering",
+    "name": "Система смазки",
+    "slug": "power-steering",
+    "count": 133,
+    "imageType": "waterpump",
+    "imageUrl": "/assets/site-images/Каталог групп/ebddcc10-de38-4025-b0f5-3037aea93183.png"
+  },
+  {
+    "id": "turbo",
+    "name": "Электрооборудование",
+    "slug": "turbo",
+    "count": 225,
+    "imageType": "turbo",
+    "imageUrl": "/assets/site-images/Каталог групп/eca4fa48-1f72-49ef-a45c-1f0f6659500d.png"
+  },
+  {
+    "id": "filtration",
+    "name": "Освещение",
+    "slug": "filtration",
+    "count": 1177,
+    "imageType": "filter",
+    "imageUrl": "/assets/site-images/Каталог групп/элементы_двигателя_60КБ.webp"
+  },
+  {
+    "id": "gaskets",
+    "name": "Система очистки стекол и фар",
+    "slug": "gaskets",
+    "count": 416,
+    "imageType": "gasket",
+    "imageUrl": "/assets/site-images/Каталог групп/01ad9d76-0e13-4489-bc5a-247fd4d4d3bd.png"
+  }
 ];
 
 export const MOCK_PARTS: LuxorPart[] = [

@@ -101,10 +101,45 @@ export default function App() {
         ]);
 
         if (isMounted) {
-          if (cats && Array.isArray(cats) && cats.length > 0) setCategoriesList(cats);
-          if (parts && Array.isArray(parts) && parts.length > 0) setPartsList(parts);
+          if (cats && Array.isArray(cats) && cats.length > 0) {
+            const mergedCats = cats.map((c, idx) => ({
+              ...BACKUP_CATS[idx % BACKUP_CATS.length],
+              ...c,
+              imageUrl: c.imageUrl || BACKUP_CATS[idx % BACKUP_CATS.length]?.imageUrl,
+            }));
+            setCategoriesList(mergedCats);
+          } else {
+            setCategoriesList(BACKUP_CATS);
+          }
+
+          if (parts && Array.isArray(parts) && parts.length > 0) {
+            const mergedParts = parts.map((p, idx) => ({
+              ...BACKUP_PARTS[idx % BACKUP_PARTS.length],
+              ...p,
+              imageUrl: p.imageUrl || BACKUP_PARTS[idx % BACKUP_PARTS.length]?.imageUrl,
+            }));
+            setPartsList(mergedParts);
+          } else {
+            setPartsList(BACKUP_PARTS);
+          }
+
           if (brands && Array.isArray(brands) && brands.length > 0) setBrandsList(brands);
-          if (theme) setAppearanceSettings((prev) => ({ ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...prev, ...theme }));
+
+          if (theme) {
+            setAppearanceSettings((prev) => ({
+              ...DEFAULT_APPEARANCE_SETTINGS,
+              ...BACKUP_THEME,
+              ...prev,
+              ...theme,
+              dextraBgImage: theme.dextraBgImage || BACKUP_THEME.dextraBgImage,
+              kaidoBgImage: theme.kaidoBgImage || BACKUP_THEME.kaidoBgImage,
+              katsumotoBgImage: theme.katsumotoBgImage || BACKUP_THEME.katsumotoBgImage,
+              luxorBgImage: theme.luxorBgImage || BACKUP_THEME.luxorBgImage,
+            }));
+          } else {
+            setAppearanceSettings(BACKUP_THEME);
+          }
+
           if (cms) setCmsPages((prev) => ({ ...BACKUP_CMS, ...prev, ...cms }));
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
