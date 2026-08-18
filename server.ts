@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import { GoogleGenAI } from '@google/genai';
@@ -10,7 +11,58 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+const DATA_DIR = path.join(process.cwd(), 'data');
+const CATALOG_FILE = path.join(DATA_DIR, 'catalog.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// ─── Global Catalog Sync Endpoints ───────────────────────────────────────────
+app.get('/api/catalog', (_req, res) => {
+  try {
+    if (fs.existsSync(CATALOG_FILE)) {
+      const data = fs.readFileSync(CATALOG_FILE, 'utf-8');
+      return res.json({ success: true, catalog: JSON.parse(data) });
+    }
+    return res.json({ success: true, catalog: null });
+  } catch (error: any) {
+    console.error('Error reading catalog:', error);
+    return res.status(500).json({ success: false, error: 'Failed to read catalog' });
+  }
+});
+
+app.post('/api/catalog', (req, res) => {
+  try {
+    const { catalog } = req.body;
+    if (!catalog) {
+      return res.status(400).json({ success: false, error: 'No catalog provided' });
+    }
+
+    let existing: any = {};
+    if (fs.existsSync(CATALOG_FILE)) {
+      try {
+        existing = JSON.parse(fs.readFileSync(CATALOG_FILE, 'utf-8'));
+      } catch {}
+    }
+
+    const updated = {
+      ...existing,
+      ...catalog,
+      updatedAt: new Date().toISOString(),
+    };
+
+    fs.writeFileSync(CATALOG_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+    return res.json({ success: true, updatedAt: updated.updatedAt });
+  } catch (error: any) {
+    console.error('Error saving catalog:', error);
+    return res.status(500).json({ success: false, error: 'Failed to save catalog' });
+  }
+});
 
 // ─── Cloudinary Configuration ───────────────────────────────────────────────
 cloudinary.config({

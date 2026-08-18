@@ -20,7 +20,7 @@ import { INITIAL_CMS_PAGES } from './data/mockCmsPages';
 import { LuxorPart, VehicleSelection, BrandItem } from './types/catalog';
 import { CmsPageData } from './types/cms';
 import { SiteAppearanceSettings, DEFAULT_APPEARANCE_SETTINGS, WholesaleLead } from './types/theme';
-import { savePersistentData, syncLoadPersistentData, loadPersistentData } from './lib/persistentStorage';
+import { savePersistentData, syncLoadPersistentData, loadPersistentData, loadServerCatalog, saveServerCatalog } from './lib/persistentStorage';
 import { INITIAL_FULL_BACKUP_DATA } from './data/initialData';
 import { Wrench, ChevronRight, Plus, Trash2, RefreshCw, Upload, ShieldAlert, Sparkles, Building2, Users } from 'lucide-react';
 
@@ -98,24 +98,32 @@ export default function App() {
     return syncLoadPersistentData('luxor_categories', BACKUP_CATS);
   });
 
-  // Asynchronously hydrate from IndexedDB on mount to ensure complete data (including high-res custom images) is loaded
+  // Asynchronously hydrate from Server API & IndexedDB on mount
   useEffect(() => {
     let isMounted = true;
 
     async function hydrateFromIndexedDB() {
       try {
-        const [cats, parts, brands, theme, cms, leads] = await Promise.all([
+        const [cats, parts, brands, theme, cms, leads, serverCatalog] = await Promise.all([
           loadPersistentData<CategoryItem[]>('luxor_categories', BACKUP_CATS),
           loadPersistentData<LuxorPart[]>('luxor_parts_list', BACKUP_PARTS),
           loadPersistentData<BrandItem[]>('rivauto_brands', BACKUP_BRANDS),
           loadPersistentData<SiteAppearanceSettings>('rivauto_theme_settings', BACKUP_THEME),
           loadPersistentData<Record<string, CmsPageData>>('rivauto_cms_pages', BACKUP_CMS),
           loadPersistentData<WholesaleLead[]>('rivauto_wholesale_leads', []),
+          loadServerCatalog(),
         ]);
 
         if (isMounted) {
-          if (cats && Array.isArray(cats) && cats.length > 0) {
-            const mergedCats = cats.map((c, idx) => ({
+          // Priority 1: Use server catalog if available (global sync across devices)
+          const effectiveCats = serverCatalog?.luxor_categories || cats;
+          const effectiveParts = serverCatalog?.luxor_parts_list || parts;
+          const effectiveBrands = serverCatalog?.rivauto_brands || brands;
+          const effectiveTheme = serverCatalog?.rivauto_theme_settings || theme;
+          const effectiveCms = serverCatalog?.rivauto_cms_pages || cms;
+
+          if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
+            const mergedCats = effectiveCats.map((c, idx) => ({
               ...BACKUP_CATS[idx % BACKUP_CATS.length],
               ...c,
               imageUrl: c.imageUrl || BACKUP_CATS[idx % BACKUP_CATS.length]?.imageUrl,
@@ -125,8 +133,8 @@ export default function App() {
             setCategoriesList(BACKUP_CATS);
           }
 
-          if (parts && Array.isArray(parts) && parts.length > 0) {
-            const mergedParts = parts.map((p, idx) => {
+          if (effectiveParts && Array.isArray(effectiveParts) && effectiveParts.length > 0) {
+            const mergedParts = effectiveParts.map((p, idx) => {
               const backupMatch = BACKUP_PARTS.find((b) => b.sku === p.sku) || BACKUP_PARTS[idx % BACKUP_PARTS.length];
               return {
                 ...backupMatch,
@@ -139,29 +147,31 @@ export default function App() {
             setPartsList(BACKUP_PARTS);
           }
 
-          if (brands && Array.isArray(brands) && brands.length > 0) setBrandsList(brands);
+          if (effectiveBrands && Array.isArray(effectiveBrands) && effectiveBrands.length > 0) {
+            setBrandsList(effectiveBrands);
+          }
 
-          if (theme) {
+          if (effectiveTheme) {
             setAppearanceSettings((prev) => ({
               ...DEFAULT_APPEARANCE_SETTINGS,
               ...BACKUP_THEME,
               ...prev,
-              ...theme,
-              dextraBgImage: theme.dextraBgImage || BACKUP_THEME.dextraBgImage,
-              kaidoBgImage: theme.kaidoBgImage || BACKUP_THEME.kaidoBgImage,
-              katsumotoBgImage: theme.katsumotoBgImage || BACKUP_THEME.katsumotoBgImage,
-              luxorBgImage: theme.luxorBgImage || BACKUP_THEME.luxorBgImage,
+              ...effectiveTheme,
+              dextraBgImage: effectiveTheme.dextraBgImage || BACKUP_THEME.dextraBgImage,
+              kaidoBgImage: effectiveTheme.kaidoBgImage || BACKUP_THEME.kaidoBgImage,
+              katsumotoBgImage: effectiveTheme.katsumotoBgImage || BACKUP_THEME.katsumotoBgImage,
+              luxorBgImage: effectiveTheme.luxorBgImage || BACKUP_THEME.luxorBgImage,
             }));
           } else {
             setAppearanceSettings(BACKUP_THEME);
           }
 
-          if (cms) setCmsPages((prev) => ({ ...BACKUP_CMS, ...prev, ...cms }));
+          if (effectiveCms) setCmsPages((prev) => ({ ...BACKUP_CMS, ...prev, ...effectiveCms }));
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
         }
       } catch (err) {
-        console.error('Error hydrating state from IndexedDB:', err);
+        console.error('Error hydrating state from IndexedDB/Server:', err);
         if (isMounted) setIsHydrated(true);
       }
     }
@@ -193,29 +203,44 @@ export default function App() {
     if (isHydrated) savePersistentData('luxor_is_admin', isAdmin);
   }, [isAdmin, isHydrated]);
 
-  // Persist Parts List
+  // Persist Parts List (Local & Global Server Sync)
   useEffect(() => {
-    if (isHydrated) savePersistentData('luxor_parts_list', partsList);
+    if (isHydrated) {
+      savePersistentData('luxor_parts_list', partsList);
+      saveServerCatalog({ luxor_parts_list: partsList });
+    }
   }, [partsList, isHydrated]);
 
-  // Persist Categories List
+  // Persist Categories List (Local & Global Server Sync)
   useEffect(() => {
-    if (isHydrated) savePersistentData('luxor_categories', categoriesList);
+    if (isHydrated) {
+      savePersistentData('luxor_categories', categoriesList);
+      saveServerCatalog({ luxor_categories: categoriesList });
+    }
   }, [categoriesList, isHydrated]);
 
-  // Persist Brands List
+  // Persist Brands List (Local & Global Server Sync)
   useEffect(() => {
-    if (isHydrated) savePersistentData('rivauto_brands', brandsList);
+    if (isHydrated) {
+      savePersistentData('rivauto_brands', brandsList);
+      saveServerCatalog({ rivauto_brands: brandsList });
+    }
   }, [brandsList, isHydrated]);
 
-  // Persist CMS Pages
+  // Persist CMS Pages (Local & Global Server Sync)
   useEffect(() => {
-    if (isHydrated) savePersistentData('rivauto_cms_pages', cmsPages);
+    if (isHydrated) {
+      savePersistentData('rivauto_cms_pages', cmsPages);
+      saveServerCatalog({ rivauto_cms_pages: cmsPages });
+    }
   }, [cmsPages, isHydrated]);
 
-  // Persist Appearance & Theme Settings
+  // Persist Appearance & Theme Settings (Local & Global Server Sync)
   useEffect(() => {
-    if (isHydrated) savePersistentData('rivauto_theme_settings', appearanceSettings);
+    if (isHydrated) {
+      savePersistentData('rivauto_theme_settings', appearanceSettings);
+      saveServerCatalog({ rivauto_theme_settings: appearanceSettings });
+    }
   }, [appearanceSettings, isHydrated]);
 
   // Persist Wholesale B2B Leads

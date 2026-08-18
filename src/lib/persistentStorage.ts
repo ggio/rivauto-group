@@ -112,3 +112,34 @@ export async function loadPersistentData<T>(key: string, fallback: T): Promise<T
   // 2. LocalStorage fallback
   return syncLoadPersistentData(key, fallback);
 }
+
+/**
+ * Server-side API Catalog Persistence (Global sync across devices)
+ */
+export async function loadServerCatalog(): Promise<any | null> {
+  try {
+    const res = await fetch('/api/catalog');
+    if (res.ok) {
+      const json = await res.json();
+      if (json.success && json.catalog) {
+        return json.catalog;
+      }
+    }
+  } catch (err) {
+    console.warn('Server catalog load error:', err);
+  }
+  return null;
+}
+
+export async function saveServerCatalog(partialData: Record<string, any>): Promise<void> {
+  try {
+    await fetch('/api/catalog', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ catalog: partialData }),
+    });
+  } catch (err) {
+    console.warn('Server catalog save error:', err);
+  }
+}
+
