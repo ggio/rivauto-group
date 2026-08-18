@@ -37,7 +37,7 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
   titleText = 'Собственные Торговые Марки',
   titleFont = 'mono',
   customFontFamily = '',
-  isAdmin = true,
+  isAdmin = false,
   onUpdateAppearanceSettings,
   onOpenManageBrands,
   onUpdateBrand,
@@ -183,38 +183,40 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
             {titleText}
           </h2>
 
-          {/* EDIT BUTTON ALWAYS ACCESSIBLE */}
-          <button
-            type="button"
-            onClick={() => {
-              setFormTitle(titleText);
-              setFormBadge(badgeText);
-              setFormTitleFont(titleFont);
-              setFormCustomFontFamily(customFontFamily);
-              setFormHeightPx(customHeightPx || 260);
-              setDextraImg(customImages?.dextra || '');
-              setKaidoImg(customImages?.kaido || '');
-              setKatsumotoImg(customImages?.katsumoto || '');
-              setLuxorImg(customImages?.luxor || '');
+          {/* EDIT BUTTON (ADMIN ONLY) */}
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => {
+                setFormTitle(titleText);
+                setFormBadge(badgeText);
+                setFormTitleFont(titleFont);
+                setFormCustomFontFamily(customFontFamily);
+                setFormHeightPx(customHeightPx || 260);
+                setDextraImg(customImages?.dextra || '');
+                setKaidoImg(customImages?.kaido || '');
+                setKatsumotoImg(customImages?.katsumoto || '');
+                setLuxorImg(customImages?.luxor || '');
 
-              const refreshedBrandEdits: { [key: string]: { tagline: string; subtitle: string; badgeText: string } } = {};
-              brands.forEach((b) => {
-                refreshedBrandEdits[b.id] = {
-                  tagline: b.tagline || '',
-                  subtitle: b.subtitle || '',
-                  badgeText: b.badgeText || '',
-                };
-              });
-              setBrandEdits(refreshedBrandEdits);
+                const refreshedBrandEdits: { [key: string]: { tagline: string; subtitle: string; badgeText: string } } = {};
+                brands.forEach((b) => {
+                  refreshedBrandEdits[b.id] = {
+                    tagline: b.tagline || '',
+                    subtitle: b.subtitle || '',
+                    badgeText: b.badgeText || '',
+                  };
+                });
+                setBrandEdits(refreshedBrandEdits);
 
-              setIsEditModalOpen(true);
-            }}
-            className="inline-flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-mono text-xs font-black px-3.5 py-1.5 rounded-xl shadow-md transition hover:scale-105"
-            title="Редактировать параметры блока 'Собственные торговые марки'"
-          >
-            <Edit2 className="w-3.5 h-3.5" />
-            <span>Редактировать блок</span>
-          </button>
+                setIsEditModalOpen(true);
+              }}
+              className="inline-flex items-center space-x-1.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-mono text-xs font-black px-3.5 py-1.5 rounded-xl shadow-md transition hover:scale-105"
+              title="Редактировать параметры блока 'Собственные торговые марки'"
+            >
+              <Edit2 className="w-3.5 h-3.5" />
+              <span>Редактировать блок</span>
+            </button>
+          )}
         </div>
 
         <div className="w-24 h-1 bg-gradient-to-r from-emerald-500 via-emerald-400 to-transparent mx-auto rounded-full mt-2" />
