@@ -125,7 +125,7 @@ export default function App() {
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c, idx) => {
               const fallbackImg = BACKUP_CATS[idx % BACKUP_CATS.length]?.imageUrl;
-              const hasCustomImg = c.imageUrl && c.imageUrl.trim() !== '' && !c.imageUrl.includes('/assets/site-images/');
+              const hasCustomImg = Boolean(c.imageUrl && c.imageUrl.trim() !== '');
               return {
                 ...BACKUP_CATS[idx % BACKUP_CATS.length],
                 ...c,
