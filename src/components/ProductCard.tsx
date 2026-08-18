@@ -138,17 +138,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </div>
 
-      {/* Footer Price & Button */}
-      <div className="pt-4 mt-3 border-t border-gray-100 flex items-end justify-between gap-2">
+      {/* Footer Status & Action Button */}
+      <div className="pt-4 mt-3 border-t border-gray-100 flex items-center justify-between gap-2">
         <div>
-          {oldPrice > displayPrice && (
-            <div className="text-[11px] text-gray-400 line-through font-mono">
-              {oldPrice.toLocaleString('ru-RU')} {currencySymbol}
-            </div>
-          )}
-          <div className="text-base font-extrabold text-[#0F172A] font-mono leading-none">
-            {displayPrice.toLocaleString('ru-RU')} <span className="text-sm font-bold">{currencySymbol}</span>
-          </div>
+          <span className="inline-block bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg text-xs font-bold font-mono border border-slate-200">
+            По запросу
+          </span>
         </div>
 
         <button

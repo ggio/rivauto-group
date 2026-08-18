@@ -73,14 +73,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ part, on
             <div className="md:col-span-8 space-y-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-gray-500">Ориентировочная оптовая цена:</div>
-                  <div className="text-2xl font-black font-mono text-gray-900">
-                    {displayPrice.toLocaleString('ru-RU')} {currencySymbol}{' '}
-                    {oldPrice > displayPrice && (
-                      <span className="text-xs font-normal text-gray-400 line-through ml-2">
-                        {oldPrice.toLocaleString('ru-RU')} {currencySymbol}
-                      </span>
-                    )}
+                  <div className="text-xs text-gray-500">Условия поставки:</div>
+                  <div className="text-lg font-bold font-mono text-gray-900">
+                    По запросу (B2B опт)
                   </div>
                 </div>
 
