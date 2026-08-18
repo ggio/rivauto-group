@@ -89,7 +89,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleAdminLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (passwordInput === 'admin' || passwordInput === '1234' || passwordInput === '') {
+    if (passwordInput === '!@Nbnfybev26!@') {
       onToggleAdminRole();
       setLoginModalOpen(false);
       setPasswordInput('');
@@ -129,7 +129,7 @@ export const Header: React.FC<HeaderProps> = ({
             <span className="flex items-center space-x-1.5">
               <span className={`w-2 h-2 rounded-full ${isAdmin ? 'bg-amber-400 animate-ping' : 'bg-emerald-400 animate-pulse'}`} />
               <strong className="text-white">
-                {isAdmin ? 'РЕЖИМ АДМИНИСТРАТОРА (Полный доступ)' : 'Оптовый B2B портал LUXOR • Гостевой доступ'}
+                {isAdmin ? 'РЕЖИМ АДМИНИСТРАТОРА (Полный доступ)' : 'Оптовый B2B портал LUXOR'}
               </strong>
             </span>
             <span className="hidden md:inline text-gray-400">|</span>
@@ -137,8 +137,8 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="flex items-center space-x-3 text-[11px]">
-            {/* Screenshots Gallery & Downloader Button */}
-            {onOpenScreenshots && (
+            {/* Screenshots Gallery & Downloader Button (Admin Only) */}
+            {isAdmin && onOpenScreenshots && (
               <button
                 onClick={onOpenScreenshots}
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-2.5 py-0.5 rounded-lg border border-indigo-500 transition flex items-center space-x-1 shadow-xs"
@@ -183,16 +183,16 @@ export const Header: React.FC<HeaderProps> = ({
                   className="bg-rose-900/80 hover:bg-rose-800 text-rose-200 border border-rose-700/60 px-2.5 py-0.5 rounded font-bold transition flex items-center space-x-1"
                 >
                   <Lock className="w-3 h-3" />
-                  <span>Выйти из админки</span>
+                  <span>Выйти</span>
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => setLoginModalOpen(true)}
-                className="bg-amber-600 hover:bg-amber-700 text-white font-bold px-3 py-0.5 rounded-lg border border-amber-500 transition flex items-center space-x-1.5 shadow-2xs"
+                className="text-gray-400 hover:text-emerald-400 transition px-1.5 py-0.5 font-bold cursor-pointer opacity-60 hover:opacity-100 text-xs"
+                title="Авторизация"
               >
-                <KeyRound className="w-3 h-3" />
-                <span>Войти как Администратор</span>
+                ✓
               </button>
             )}
 
@@ -706,7 +706,7 @@ export const Header: React.FC<HeaderProps> = ({
                   autoFocus
                 />
                 {passwordError && (
-                  <p className="text-rose-600 text-[11px] mt-1 font-bold">Неверный пароль. Попробуйте "admin".</p>
+                  <p className="text-rose-600 text-[11px] mt-1 font-bold">Неверный пароль. Доступ ограничен.</p>
                 )}
               </div>
 

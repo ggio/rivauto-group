@@ -832,16 +832,6 @@ export default function App() {
                     • {cmsPages.custom?.navTitle || 'Партнерам и Оптовикам'}
                   </button>
                 </li>
-                <li>
-                  <button onClick={() => setIsScreenshotsModalOpen(true)} className="hover:text-indigo-700 hover:underline font-bold text-indigo-700">
-                    📸 • Скриншоты всех страниц (Скачать на ПК)
-                  </button>
-                </li>
-                <li>
-                  <button onClick={() => setIsThemeEditorOpen(true)} className="hover:text-emerald-700 hover:underline font-bold text-emerald-800">
-                    🎨 • Оформление (Редактор темы)
-                  </button>
-                </li>
               </ul>
             </div>
 
