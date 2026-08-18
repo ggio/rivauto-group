@@ -23,12 +23,31 @@ if (!fs.existsSync(DATA_DIR)) {
 }
 
 // ─── Global Catalog Sync Endpoints ───────────────────────────────────────────
-app.get('/api/catalog', (_req, res) => {
+app.get('/api/catalog', async (_req, res) => {
   try {
     if (fs.existsSync(CATALOG_FILE)) {
       const data = fs.readFileSync(CATALOG_FILE, 'utf-8');
-      return res.json({ success: true, catalog: JSON.parse(data) });
+      const parsed = JSON.parse(data);
+      if (parsed && Object.keys(parsed).length > 0) {
+        return res.json({ success: true, catalog: parsed });
+      }
     }
+
+    // Fallback: Fetch permanent catalog backup from Cloudinary CDN if local disk is fresh/ephemeral
+    if (process.env.CLOUDINARY_CLOUD_NAME) {
+      const cloudUrl = `https://res.cloudinary.com/${process.env.CLOUDINARY_CLOUD_NAME}/raw/upload/v1/rivauto_catalog.json`;
+      try {
+        const response = await fetch(cloudUrl);
+        if (response.ok) {
+          const remoteCatalog = await response.json();
+          fs.writeFileSync(CATALOG_FILE, JSON.stringify(remoteCatalog, null, 2), 'utf-8');
+          return res.json({ success: true, catalog: remoteCatalog });
+        }
+      } catch (err) {
+        console.warn('Cloudinary catalog fallback fetch error:', err);
+      }
+    }
+
     return res.json({ success: true, catalog: null });
   } catch (error: any) {
     console.error('Error reading catalog:', error);
@@ -57,6 +76,29 @@ app.post('/api/catalog', (req, res) => {
     };
 
     fs.writeFileSync(CATALOG_FILE, JSON.stringify(updated, null, 2), 'utf-8');
+
+    // Async backup to Cloudinary raw storage for permanent cross-device persistence
+    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+      try {
+        const jsonBuffer = Buffer.from(JSON.stringify(updated), 'utf-8');
+        cloudinary.uploader.upload_stream(
+          {
+            public_id: 'rivauto_catalog',
+            resource_type: 'raw',
+            format: 'json',
+            overwrite: true,
+            invalidate: true,
+          },
+          (err, _result) => {
+            if (err) console.error('Cloudinary catalog backup upload error:', err);
+            else console.log('[Cloudinary] Catalog backup updated permanently!');
+          }
+        ).end(jsonBuffer);
+      } catch (cloudErr) {
+        console.error('Cloudinary upload_stream error:', cloudErr);
+      }
+    }
+
     return res.json({ success: true, updatedAt: updated.updatedAt });
   } catch (error: any) {
     console.error('Error saving catalog:', error);

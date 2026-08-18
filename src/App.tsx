@@ -139,7 +139,7 @@ export default function App() {
               return {
                 ...backupMatch,
                 ...p,
-                imageUrl: backupMatch?.imageUrl || p.imageUrl,
+                imageUrl: p.imageUrl || backupMatch?.imageUrl,
               };
             });
             setPartsList(mergedParts);
