@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrandItem } from '../types/catalog';
 import { X, Edit2, Plus, Check, ShieldCheck, Sparkles, Upload } from 'lucide-react';
+import { ImageUploader } from './ImageUploader';
 
 interface BrandManagerModalProps {
   brands: BrandItem[];
@@ -141,82 +142,24 @@ export const BrandManagerModal: React.FC<BrandManagerModalProps> = ({
                 />
               </div>
 
+              {/* Brand Logo Upload */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Логотип бренда (PNG прозрачный)</label>
-                <div className="flex items-center space-x-2">
-                  <label className="cursor-pointer bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-xs flex-shrink-0">
-                    <Upload className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>Загрузить PNG с ПК</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onload = (evt) => {
-                            const dataUrl = evt.target?.result as string;
-                            if (dataUrl) setLogoUrl(dataUrl);
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                    />
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="Или вставьте URL-адрес файла PNG (https://...)"
-                    value={logoUrl}
-                    onChange={(e) => setLogoUrl(e.target.value)}
-                    className="w-full bg-white border border-gray-300 rounded-xl px-3 py-2 text-xs font-mono"
-                  />
-                  {logoUrl && (
-                    <img src={logoUrl} alt="Logo" className="w-8 h-8 object-contain bg-white rounded border border-gray-200" />
-                  )}
-                </div>
+                <ImageUploader
+                  label={`Логотип бренда (${editingBrand.name})`}
+                  value={logoUrl}
+                  onChange={setLogoUrl}
+                  folder="rivauto/brands"
+                />
               </div>
 
               {/* Brand Main Background Banner Image Upload */}
-              <div className="bg-amber-100/70 p-3.5 rounded-2xl border border-amber-300 space-y-2">
-                <label className="block text-xs font-bold text-amber-950 font-mono uppercase tracking-wider">
-                  🖼️ Главный фоновый баннер бренда ({editingBrand.name})
-                </label>
-                <p className="text-[11px] text-amber-900">
-                  Картинка для шапки бренда {editingBrand.name}. Можно загрузить файл с компьютера или вставить URL.
-                </p>
-                <div className="flex items-center space-x-2">
-                  <label className="cursor-pointer bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs px-3 py-2 rounded-xl transition flex items-center space-x-1.5 shadow-xs flex-shrink-0">
-                    <Upload className="w-3.5 h-3.5 text-white" />
-                    <span>📁 Загрузить баннер с ПК</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onload = (evt) => {
-                            const dataUrl = evt.target?.result as string;
-                            if (dataUrl) setBannerImage(dataUrl);
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                    />
-                  </label>
-                  <input
-                    type="url"
-                    placeholder="Или вставьте URL-адрес изображения баннера..."
-                    value={bannerImage}
-                    onChange={(e) => setBannerImage(e.target.value)}
-                    className="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-mono"
-                  />
-                  {bannerImage && (
-                    <img src={bannerImage} alt="Banner" className="w-12 h-8 object-cover bg-white rounded border border-amber-300" />
-                  )}
-                </div>
+              <div>
+                <ImageUploader
+                  label={`Главный фоновый баннер бренда (${editingBrand.name})`}
+                  value={bannerImage}
+                  onChange={setBannerImage}
+                  folder="rivauto/brands"
+                />
               </div>
 
               <div>

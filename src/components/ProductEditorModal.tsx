@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { LuxorPart, CrossReference, VehicleFitment } from '../types/catalog';
-import { X, Plus, Trash2, Save, Wrench, CheckCircle2, Layers, ShieldCheck, Tag, Image, Upload, Link, Camera } from 'lucide-react';
+import { X, Plus, Trash2, Save, Wrench, CheckCircle2, Layers, ShieldCheck, Tag, Image } from 'lucide-react';
 import { LUXOR_CATEGORIES } from '../data/mockParts';
+import { ImageUploader } from './ImageUploader';
 
 interface ProductEditorModalProps {
   partToEdit?: LuxorPart | null;
@@ -432,83 +433,13 @@ export const ProductEditorModal: React.FC<ProductEditorModalProps> = ({
               <Image className="w-4 h-4" />
               <span>Фотография товара / Загрузка изображения</span>
             </h3>
-
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-              {/* Left Column: Upload Methods */}
-              <div className="md:col-span-8 space-y-4">
-                {/* Method 1: File Upload */}
-                <div className="bg-white p-3 rounded-xl border border-gray-200 space-y-2">
-                  <div className="font-bold text-gray-800 text-xs flex items-center space-x-1.5">
-                    <Upload className="w-4 h-4 text-[#1B4E9B]" />
-                    <span>Загрузить фото с устройства (Компьютер / Смартфон)</span>
-                  </div>
-                  <p className="text-[11px] text-gray-500">
-                    Выберите файл формата JPG, PNG, WEBP. Изображение будет сохранено в базе данных.
-                  </p>
-                  <label className="inline-flex items-center space-x-2 bg-[#1B4E9B] hover:bg-[#153D7A] text-white font-bold px-4 py-2 rounded-xl text-xs cursor-pointer transition shadow-xs">
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>Загрузить PNG с компьютера</span>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageFileUpload}
-                      className="hidden"
-                    />
-                  </label>
-                </div>
-
-                {/* Method 2: Direct URL */}
-                <div className="bg-white p-3 rounded-xl border border-gray-200 space-y-2">
-                  <div className="font-bold text-gray-800 text-xs flex items-center space-x-1.5">
-                    <Link className="w-4 h-4 text-[#1B4E9B]" />
-                    <span>Или укажите прямую ссылку (URL) на картинку</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="url"
-                      value={imageUrl}
-                      onChange={(e) => setImageUrl(e.target.value)}
-                      placeholder="https://example.com/photo-part.jpg"
-                      className="w-full bg-gray-50 border border-gray-300 rounded-xl px-3 py-2 text-gray-900 focus:border-[#1E4E8C] outline-none font-mono text-xs"
-                    />
-                    {imageUrl && (
-                      <button
-                        type="button"
-                        onClick={() => setImageUrl('')}
-                        className="bg-rose-100 hover:bg-rose-200 text-rose-700 font-bold px-3 py-2 rounded-xl text-xs whitespace-nowrap flex items-center space-x-1 transition"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Удалить</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column: Preview Box */}
-              <div className="md:col-span-4 h-48 bg-white border-2 border-dashed border-gray-300 rounded-2xl p-2 flex flex-col items-center justify-center relative overflow-hidden text-center">
-                {imageUrl ? (
-                  <div className="w-full h-full relative group flex items-center justify-center">
-                    <img
-                      src={imageUrl}
-                      alt="Превью загруженной детали"
-                      className="max-h-full max-w-full object-contain rounded-lg"
-                    />
-                    <div className="absolute top-1 right-1 bg-emerald-600 text-white text-[9px] font-bold px-2 py-0.5 rounded shadow-xs font-mono">
-                      Фото готово
-                    </div>
-                  </div>
-                ) : (
-                  <div className="text-gray-400 space-y-2 p-2">
-                    <Camera className="w-10 h-10 mx-auto text-gray-300" />
-                    <div className="text-xs font-bold text-gray-600">Фотография не загружена</div>
-                    <div className="text-[10px] text-gray-400 leading-tight">
-                      Если фото не выбрано, каталог автоматически отобразит векторную 2D-схему детали
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            <ImageUploader
+              value={imageUrl}
+              onChange={setImageUrl}
+              folder="rivauto/products"
+              label=""
+              placeholder="https://example.com/photo-part.jpg"
+            />
           </div>
 
           {/* Section 2: Technical Specifications & Stock */}
