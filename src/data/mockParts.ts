@@ -7,7 +7,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "name": "Все категории",
     "slug": "all",
     "count": 12400,
-    "imageUrl": "/assets/site-images/Каталог групп/b7ad3bbd-2a9d-4f4a-942d-8a720700c402.png"
+    "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "radiators",
@@ -15,7 +15,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "radiators",
     "count": 2334,
     "imageType": "radiator",
-    "imageUrl": "/assets/site-images/Каталог групп/c0e0da6a-f50b-4db8-aee3-ba6e73091edd.png"
+    "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "water-pumps",
@@ -23,7 +23,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "water-pumps",
     "count": 514,
     "imageType": "waterpump",
-    "imageUrl": "/assets/site-images/Каталог групп/4f6196da-9590-4d40-9b53-2a3ca8d039ea.png"
+    "imageUrl": "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "fans",
@@ -31,7 +31,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "fans",
     "count": 1111,
     "imageType": "fan",
-    "imageUrl": "/assets/site-images/Каталог групп/5f78c607-af81-4727-afc6-aa49b7b621b6.png"
+    "imageUrl": "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "thermostats",
@@ -39,7 +39,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "thermostats",
     "count": 501,
     "imageType": "thermostat",
-    "imageUrl": "/assets/site-images/Каталог групп/47beceda-4c1e-4e3a-a483-ed96db31f2c7.png"
+    "imageUrl": "https://images.unsplash.com/photo-1600706432520-2ed3e29f3d9b?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "cooling-comp",
@@ -47,7 +47,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "cooling-comp",
     "count": 713,
     "imageType": "thermostat",
-    "imageUrl": "/assets/site-images/Каталог групп/b4736375-dfaa-4902-8689-1f76e4cc3f60.png"
+    "imageUrl": "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "ac-compressors",
@@ -55,7 +55,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "ac-compressors",
     "count": 424,
     "imageType": "compressor",
-    "imageUrl": "/assets/site-images/Каталог групп/ec117487-0627-45e3-a1e5-597745bfa625.png"
+    "imageUrl": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "ac-comp",
@@ -63,7 +63,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "ac-comp",
     "count": 182,
     "imageType": "compressor",
-    "imageUrl": "/assets/site-images/Каталог групп/5008be08-29e6-4a5b-aef3-9e6cbe675935.png"
+    "imageUrl": "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "air-compressors",
@@ -71,7 +71,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "air-compressors",
     "count": 59,
     "imageType": "compressor",
-    "imageUrl": "/assets/site-images/Каталог групп/daced6af-3a3b-44a3-8fd2-0266ad2d4d38.png"
+    "imageUrl": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "power-steering",
@@ -79,7 +79,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "power-steering",
     "count": 133,
     "imageType": "waterpump",
-    "imageUrl": "/assets/site-images/Каталог групп/ebddcc10-de38-4025-b0f5-3037aea93183.png"
+    "imageUrl": "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "turbo",
@@ -87,7 +87,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "turbo",
     "count": 225,
     "imageType": "turbo",
-    "imageUrl": "/assets/site-images/Каталог групп/eca4fa48-1f72-49ef-a45c-1f0f6659500d.png"
+    "imageUrl": "https://images.unsplash.com/photo-1508974239320-0a029497e820?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "filtration",
@@ -95,7 +95,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "filtration",
     "count": 1177,
     "imageType": "filter",
-    "imageUrl": "/assets/site-images/Каталог групп/элементы_двигателя_60КБ.webp"
+    "imageUrl": "https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=800&auto=format&fit=crop"
   },
   {
     "id": "gaskets",
@@ -103,7 +103,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "gaskets",
     "count": 416,
     "imageType": "gasket",
-    "imageUrl": "/assets/site-images/Каталог групп/01ad9d76-0e13-4489-bc5a-247fd4d4d3bd.png"
+    "imageUrl": "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=800&auto=format&fit=crop"
   }
 ];
 
