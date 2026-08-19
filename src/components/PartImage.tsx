@@ -21,10 +21,19 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
     setImgLoaded(false);
   }, [effectiveImageUrl]);
 
-  const hasImage = Boolean(effectiveImageUrl && !imgError && effectiveImageUrl.trim() !== '');
+  if (effectiveImageUrl && !imgError && effectiveImageUrl.trim() !== '') {
+    return (
+      <img
+        src={effectiveImageUrl}
+        alt={alt}
+        className={className}
+        referrerPolicy="no-referrer"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
 
-  const renderSvgFallback = () => {
-    const normType = (effectiveType || '').toLowerCase();
+  const normType = (effectiveType || '').toLowerCase();
 
   // 1. RADIATOR (Радиаторы)
   if (normType.includes('radiator') || normType.includes('радиатор')) {
@@ -267,36 +276,11 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
   }
 
   // Default: Generic Auto Part
-    return (
-      <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="50" y="40" width="200" height="120" rx="16" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="4" />
-        <circle cx="150" cy="100" r="35" fill="#1E293B" />
-        <path d="M 120 100 L 180 100 M 150 70 L 150 130" stroke="#F8FAFC" strokeWidth="6" strokeLinecap="round" />
-      </svg>
-    );
-  };
-
-  if (hasImage) {
-    return (
-      <div className={`relative ${className} flex items-center justify-center overflow-hidden`}>
-        {!imgLoaded && (
-          <div className="absolute inset-0 z-0 flex items-center justify-center bg-slate-50 transition-opacity">
-            {renderSvgFallback()}
-          </div>
-        )}
-        <img
-          src={effectiveImageUrl}
-          alt={alt}
-          loading="eager"
-          decoding="async"
-          referrerPolicy="no-referrer"
-          className={`relative z-10 ${className} transition-opacity duration-300 ${imgLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={() => setImgLoaded(true)}
-          onError={() => setImgError(true)}
-        />
-      </div>
-    );
-  }
-
-  return renderSvgFallback();
+  return (
+    <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="50" y="40" width="200" height="120" rx="16" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="4" />
+      <circle cx="150" cy="100" r="35" fill="#1E293B" />
+      <path d="M 120 100 L 180 100 M 150 70 L 150 130" stroke="#F8FAFC" strokeWidth="6" strokeLinecap="round" />
+    </svg>
+  );
 };
