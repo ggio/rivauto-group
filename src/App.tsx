@@ -115,9 +115,9 @@ export default function App() {
         ]);
 
         if (isMounted) {
-          // Priority 1: Use local IndexedDB categories first if user modified them locally, fallback to server catalog
-          const localCatsHasCustomImages = cats && Array.isArray(cats) && cats.some((c) => c.imageUrl && c.imageUrl.trim() !== '');
-          const effectiveCats = localCatsHasCustomImages ? cats : (serverCatalog?.luxor_categories || cats);
+          const effectiveCats = (serverCatalog?.luxor_categories && serverCatalog.luxor_categories.length > 0)
+            ? serverCatalog.luxor_categories
+            : (cats && cats.length > 0 ? cats : BACKUP_CATS);
 
           const effectiveParts = serverCatalog?.luxor_parts_list || parts;
           const effectiveBrands = serverCatalog?.rivauto_brands || brands;
@@ -127,9 +127,12 @@ export default function App() {
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
-              // Ensure local custom imageUrl is never overwritten
               const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
-              const activeImage = localMatch?.imageUrl || c.imageUrl || backupMatch?.imageUrl;
+              // Prioritize remote Cloudinary HTTPS URL over local Data URL
+              let activeImage = c.imageUrl || localMatch?.imageUrl || backupMatch?.imageUrl;
+              if (c.imageUrl && c.imageUrl.startsWith('https://res.cloudinary.com')) {
+                activeImage = c.imageUrl;
+              }
               return {
                 ...(backupMatch || {}),
                 ...c,
@@ -137,8 +140,6 @@ export default function App() {
               };
             });
             setCategoriesList(mergedCats);
-          } else if (cats && Array.isArray(cats) && cats.length > 0) {
-            setCategoriesList(cats);
           } else {
             setCategoriesList(BACKUP_CATS);
           }
