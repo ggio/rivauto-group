@@ -1310,7 +1310,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
                   <input
                     type="tel"
                     required
-                    placeholder="Телефон (+7...)"
+                    placeholder="Телефон (8 701 082 9502...)"
                     value={contactForm.phone}
                     onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
                     className="bg-slate-800 border border-slate-600 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 font-medium font-mono"

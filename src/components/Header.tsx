@@ -197,9 +197,9 @@ export const Header: React.FC<HeaderProps> = ({
             )}
 
             <span className="text-gray-500">|</span>
-            <a href="tel:+78005553920" className="hidden sm:flex items-center space-x-1 hover:text-white transition">
+            <a href="tel:87010829502" className="hidden sm:flex items-center space-x-1 hover:text-white transition">
               <Phone className="w-3 h-3 text-[#1B4E9B]" />
-              <span className="font-bold text-white">+7 (800) 555-39-20</span>
+              <span className="font-bold text-white">8 701 082 9502</span>
             </a>
           </div>
         </div>
