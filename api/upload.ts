@@ -43,8 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 1. Try signed upload with account credentials
     if (cloudName && apiKey && apiSecret) {
       try {
-        const paramsToSign = uploadFolder ? `folder=${uploadFolder}&timestamp=${timestamp}` : `timestamp=${timestamp}`;
-        const strToSign = `${paramsToSign}${apiSecret}`;
+        const strToSign = `timestamp=${timestamp}${apiSecret}`;
         
         const encoder = new TextEncoder();
         const data = encoder.encode(strToSign);
@@ -54,7 +53,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const formData = new URLSearchParams();
         formData.append('file', base64Data);
-        if (uploadFolder) formData.append('folder', uploadFolder);
         formData.append('api_key', apiKey);
         formData.append('timestamp', timestamp.toString());
         formData.append('signature', signature);
