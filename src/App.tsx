@@ -841,10 +841,10 @@ export default function App() {
             </div>
 
             <div>
-              <div className="text-gray-900 font-bold text-sm mb-2">Контакты B2B Отдела</div>
+              <div className="text-gray-900 font-bold text-sm mb-2">Контакты B2B Отдела Продаж</div>
               <p className="text-gray-600 text-xs leading-relaxed">
-                Горячая линия дистрибьюторов: <strong>+7 (800) 555-39-20</strong><br />
-                Почта закупщиков: <strong>b2b-supply@luxor-autoparts.de</strong>
+                Отдел оптовых продаж: <a href="tel:87010829502" className="text-[#1E4E8C] font-bold hover:underline">8 701 082 9502</a><br />
+                Почта отдела продаж: <a href="mailto:rivavto01@gmail.com" className="text-[#1E4E8C] font-bold hover:underline">rivavto01@gmail.com</a>
               </p>
             </div>
           </div>
