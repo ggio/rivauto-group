@@ -27,7 +27,7 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
         src={effectiveImageUrl}
         alt={alt}
         className={className}
-        referrerPolicy="no-referrer"
+        loading="eager"
         onError={() => setImgError(true)}
       />
     );
