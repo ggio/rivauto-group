@@ -15,7 +15,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "radiators",
     "count": 2334,
     "imageType": "radiator",
-    "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_engine.jpg"
   },
   {
     "id": "water-pumps",
@@ -23,7 +23,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "water-pumps",
     "count": 514,
     "imageType": "waterpump",
-    "imageUrl": "https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_fuel.jpg"
   },
   {
     "id": "fans",
@@ -47,7 +47,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "cooling-comp",
     "count": 713,
     "imageType": "thermostat",
-    "imageUrl": "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_transmission.jpg"
   },
   {
     "id": "ac-compressors",
