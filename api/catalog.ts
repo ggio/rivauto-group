@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // 2. Fallback to Cloudinary CDN raw storage backup
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'iupbflicf';
     if (cloudName) {
       try {
         const cloudUrl = `https://res.cloudinary.com/${cloudName}/raw/upload/v1/rivauto_catalog.json`;
@@ -54,9 +54,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       };
 
       // Async upload to Cloudinary for cross-device global sync
-      const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-      const apiKey = process.env.CLOUDINARY_API_KEY;
-      const apiSecret = process.env.CLOUDINARY_API_SECRET;
+      const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'iupbflicf';
+      const apiKey = process.env.CLOUDINARY_API_KEY || '991982394316979';
+      const apiSecret = process.env.CLOUDINARY_API_SECRET || 'RuAPGJPDrnSCRBO59xetwI6rZE';
 
       if (cloudName && apiKey && apiSecret) {
         try {

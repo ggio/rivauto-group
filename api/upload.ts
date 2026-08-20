@@ -33,15 +33,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ success: false, error: 'Файл или изображение не передано.' });
     }
 
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'demo';
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'iupbflicf';
+    const apiKey = process.env.CLOUDINARY_API_KEY || '991982394316979';
+    const apiSecret = process.env.CLOUDINARY_API_SECRET || 'RuAPGJPDrnSCRBO59xetwI6rZE';
 
     const timestamp = Math.floor(Date.now() / 1000);
     const uploadFolder = folder || 'rivauto_categories';
 
-    // 1. Try signed upload if full credentials are provided
-    if (cloudName && cloudName !== 'demo' && apiKey && apiSecret) {
+    // 1. Try signed upload with account credentials
+    if (cloudName && apiKey && apiSecret) {
       try {
         const strToSign = `folder=${uploadFolder}&timestamp=${timestamp}${apiSecret}`;
         const encoder = new TextEncoder();
