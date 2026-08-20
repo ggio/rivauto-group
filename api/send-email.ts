@@ -38,44 +38,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 • Дата заявки: ${new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' })}
     `.trim();
 
-    // 1. Send via Webhook / Email Service API (Resend / Formspree / EmailJS)
-    const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    if (RESEND_API_KEY) {
-      const emailRes = await fetch('https://api.resend.com/emails', {
+    // 1. Send via FormSubmit service directly to rivavto01@gmail.com
+    try {
+      const fsRes = await fetch('https://formsubmit.co/ajax/rivavto01@gmail.com', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
           'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Referer': 'https://rivauto.group/',
         },
         body: JSON.stringify({
-          from: 'RivAuto Website <onboarding@resend.dev>',
-          to: [recipientEmail],
-          subject: emailSubject,
-          text: emailContent,
+          _subject: emailSubject,
+          'Компания / ИП': companyName,
+          'Рабочий Email': email,
+          'Телефон': phone || 'Не указан',
+          'Интересующий бренд': brand || 'Все бренды',
+          'Тип клиента': role || 'Дистрибьютор',
+          'Сообщение': message || 'Запрос КП',
+          '_template': 'table',
         }),
       });
-      if (emailRes.ok) {
-        return res.status(200).json({ success: true, message: 'Письмо успешно отправлено на почту!' });
-      }
-    }
 
-    // 2. Fallback to Formspree / Webhook endpoint if Resend isn't configured
-    try {
-      await fetch('https://formspree.io/f/xvovbkgq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          companyName,
-          email,
-          phone,
-          brand,
-          role,
-          message,
-          to: recipientEmail,
-        }),
+      const fsJson = await fsRes.json();
+      console.log('FormSubmit API result:', fsJson);
+
+      return res.status(200).json({
+        success: true,
+        message: 'Заявка принята и отправлена менеджерам на rivavto01@gmail.com',
+        result: fsJson,
       });
-    } catch (fsErr) {
-      console.warn('Formspree fallback warning:', fsErr);
+    } catch (err: any) {
+      console.error('FormSubmit send error:', err);
     }
 
     return res.status(200).json({
