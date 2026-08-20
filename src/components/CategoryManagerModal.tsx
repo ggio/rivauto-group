@@ -38,6 +38,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
   const [imageUrl, setImageUrl] = useState('');
   const [imageType, setImageType] = useState('radiator');
   const [description, setDescription] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   // Reset form helper
   const resetForm = () => {
@@ -89,8 +90,6 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
     setImageType(cat.imageType || 'radiator');
     setDescription(cat.description || '');
   };
-
-  const [isUploading, setIsUploading] = React.useState(false);
 
   const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
