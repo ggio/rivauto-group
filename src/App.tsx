@@ -115,8 +115,10 @@ export default function App() {
         ]);
 
         if (isMounted) {
-          // Priority 1: Use server catalog if available (global sync across devices)
-          const effectiveCats = serverCatalog?.luxor_categories || cats;
+          // Priority 1: Use local IndexedDB categories first if user modified them locally, fallback to server catalog
+          const localCatsHasCustomImages = cats && Array.isArray(cats) && cats.some((c) => c.imageUrl && c.imageUrl.trim() !== '');
+          const effectiveCats = localCatsHasCustomImages ? cats : (serverCatalog?.luxor_categories || cats);
+
           const effectiveParts = serverCatalog?.luxor_parts_list || parts;
           const effectiveBrands = serverCatalog?.rivauto_brands || brands;
           const effectiveTheme = serverCatalog?.rivauto_theme_settings || theme;
@@ -125,10 +127,13 @@ export default function App() {
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
+              // Ensure local custom imageUrl is never overwritten
+              const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
+              const activeImage = localMatch?.imageUrl || c.imageUrl || backupMatch?.imageUrl;
               return {
                 ...(backupMatch || {}),
                 ...c,
-                imageUrl: c.imageUrl !== undefined ? c.imageUrl : backupMatch?.imageUrl,
+                imageUrl: activeImage,
               };
             });
             setCategoriesList(mergedCats);
