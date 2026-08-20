@@ -100,28 +100,20 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
       return;
     }
 
-    setIsUploading(true);
-
     const reader = new FileReader();
-    reader.onload = async (event) => {
+    reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
-      if (!dataUrl) {
-        setIsUploading(false);
-        return;
-      }
+      if (!dataUrl) return;
 
-      // Preview immediately
       setImageUrl(dataUrl);
 
-      // Compress first
       const img = new Image();
-      img.onload = async () => {
-        let finalBase64 = dataUrl;
+      img.onload = () => {
         try {
           const canvas = document.createElement('canvas');
           let width = img.width;
           let height = img.height;
-          const maxDim = 600;
+          const maxDim = 800;
 
           if (width > maxDim || height > maxDim) {
             if (width > height) {
@@ -138,33 +130,13 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            finalBase64 = canvas.toDataURL('image/jpeg', 0.82);
+            const compressed = canvas.toDataURL('image/jpeg', 0.85);
+            setImageUrl(compressed);
           }
         } catch (err) {
           console.error('Error compressing image:', err);
         }
-
-        // Upload compressed image to Cloudinary server to get permanent CDN HTTP URL
-        try {
-          const res = await fetch('/api/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ file: finalBase64, folder: 'rivauto_categories' }),
-          });
-          const json = await res.json();
-          if (json.success && json.url) {
-            setImageUrl(json.url);
-          } else {
-            setImageUrl(finalBase64);
-          }
-        } catch (uploadErr) {
-          console.warn('Server upload error, fallback to compressed data URL:', uploadErr);
-          setImageUrl(finalBase64);
-        } finally {
-          setIsUploading(false);
-        }
       };
-      img.onerror = () => setIsUploading(false);
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
