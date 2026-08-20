@@ -31,7 +31,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "fans",
     "count": 1111,
     "imageType": "fan",
-    "imageUrl": "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_suspension.jpg"
   },
   {
     "id": "thermostats",
@@ -39,7 +39,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "thermostats",
     "count": 501,
     "imageType": "thermostat",
-    "imageUrl": "https://images.unsplash.com/photo-1600706432520-2ed3e29f3d9b?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_brakes.jpg"
   },
   {
     "id": "cooling-comp",
