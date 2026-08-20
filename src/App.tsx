@@ -132,8 +132,10 @@ export default function App() {
               };
             });
             setCategoriesList(mergedCats);
+          } else if (cats && Array.isArray(cats) && cats.length > 0) {
+            setCategoriesList(cats);
           } else {
-            setCategoriesList(cats && cats.length > 0 ? cats : BACKUP_CATS);
+            setCategoriesList(BACKUP_CATS);
           }
 
           if (effectiveParts && Array.isArray(effectiveParts) && effectiveParts.length > 0) {
