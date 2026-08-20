@@ -154,9 +154,12 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
           const json = await res.json();
           if (json.success && json.url) {
             setImageUrl(json.url);
+          } else {
+            setImageUrl(finalBase64);
           }
         } catch (uploadErr) {
           console.warn('Server upload error, fallback to compressed data URL:', uploadErr);
+          setImageUrl(finalBase64);
         } finally {
           setIsUploading(false);
         }
@@ -375,7 +378,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
                     <div className="flex items-center space-x-3">
                       {/* Thumbnail */}
                       <div className="w-12 h-12 bg-white border border-gray-200 rounded-xl p-1 flex items-center justify-center flex-shrink-0">
-                        <PartImage type={cat.name} imageUrl={cat.imageUrl} className="max-h-10 max-w-full object-contain" />
+                        <PartImage type={cat.imageType || cat.name} imageUrl={cat.imageUrl} className="max-h-10 max-w-full object-contain" />
                       </div>
 
                       <div>
