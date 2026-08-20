@@ -90,6 +90,8 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
     setDescription(cat.description || '');
   };
 
+  const [isUploading, setIsUploading] = React.useState(false);
+
   const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -99,22 +101,28 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      if (!dataUrl) return;
+    setIsUploading(true);
 
-      // Set immediately for quick UI response
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      const dataUrl = event.target?.result as string;
+      if (!dataUrl) {
+        setIsUploading(false);
+        return;
+      }
+
+      // Preview immediately
       setImageUrl(dataUrl);
 
-      // Compress via Canvas to ensure lightweight storage (<100KB)
+      // Compress first
       const img = new Image();
-      img.onload = () => {
+      img.onload = async () => {
+        let finalBase64 = dataUrl;
         try {
           const canvas = document.createElement('canvas');
           let width = img.width;
           let height = img.height;
-          const maxDim = 450; // Optimal resolution for category tile thumbnails
+          const maxDim = 600;
 
           if (width > maxDim || height > maxDim) {
             if (width > height) {
@@ -131,14 +139,30 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.78);
-            setImageUrl(compressedDataUrl);
+            finalBase64 = canvas.toDataURL('image/jpeg', 0.82);
           }
         } catch (err) {
-          console.error('Error compressing category image:', err);
+          console.error('Error compressing image:', err);
+        }
+
+        // Upload compressed image to Cloudinary server to get permanent CDN HTTP URL
+        try {
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ file: finalBase64, folder: 'rivauto_categories' }),
+          });
+          const json = await res.json();
+          if (json.success && json.url) {
+            setImageUrl(json.url);
+          }
+        } catch (uploadErr) {
+          console.warn('Server upload error, fallback to compressed data URL:', uploadErr);
+        } finally {
+          setIsUploading(false);
         }
       };
-      img.onerror = () => setImageUrl(dataUrl);
+      img.onerror = () => setIsUploading(false);
       img.src = dataUrl;
     };
     reader.readAsDataURL(file);
