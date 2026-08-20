@@ -108,8 +108,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
       setImageUrl(dataUrl);
 
       const img = new Image();
-      img.onload = async () => {
-        let finalBase64 = dataUrl;
+      img.onload = () => {
         try {
           const canvas = document.createElement('canvas');
           let width = img.width;
@@ -131,29 +130,24 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
           const ctx = canvas.getContext('2d');
           if (ctx) {
             ctx.drawImage(img, 0, 0, width, height);
-            finalBase64 = canvas.toDataURL('image/jpeg', 0.85);
+            const finalBase64 = canvas.toDataURL('image/jpeg', 0.85);
             setImageUrl(finalBase64);
+
+            // Auto-commit immediately if currently editing an existing category
+            if (editingId) {
+              onUpdateCategory({
+                id: editingId,
+                name: name.trim(),
+                slug: slug.trim(),
+                count: Number(count) || 0,
+                imageType: imageType,
+                imageUrl: finalBase64,
+                description: description.trim() || undefined,
+              });
+            }
           }
         } catch (err) {
           console.error('Error compressing image:', err);
-        }
-
-        // Upload to server/Cloudinary for global HTTPS access
-        try {
-          setIsUploading(true);
-          const res = await fetch('/api/upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ file: finalBase64, folder: 'rivauto_categories' }),
-          });
-          const json = await res.json();
-          if (json.success && json.url) {
-            setImageUrl(json.url);
-          }
-        } catch (uploadErr) {
-          console.warn('Server upload error:', uploadErr);
-        } finally {
-          setIsUploading(false);
         }
       };
       img.src = dataUrl;
