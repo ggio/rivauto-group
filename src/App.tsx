@@ -124,12 +124,13 @@ export default function App() {
 
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c, idx) => {
-              const fallbackImg = BACKUP_CATS[idx % BACKUP_CATS.length]?.imageUrl;
-              const hasCustomImg = Boolean(c.imageUrl && c.imageUrl.trim() !== '');
+              const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug) || BACKUP_CATS[idx % BACKUP_CATS.length];
+              const customImg = c.imageUrl && c.imageUrl.trim() !== '' ? c.imageUrl : undefined;
+              const fallbackImg = backupMatch?.imageUrl || "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=75&w=400&fm=webp&fit=crop";
               return {
-                ...BACKUP_CATS[idx % BACKUP_CATS.length],
+                ...backupMatch,
                 ...c,
-                imageUrl: hasCustomImg ? c.imageUrl : fallbackImg,
+                imageUrl: customImg || fallbackImg,
               };
             });
             setCategoriesList(mergedCats);
