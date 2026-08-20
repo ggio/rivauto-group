@@ -42,20 +42,7 @@ export async function savePersistentData<T>(key: string, value: T): Promise<void
     const jsonString = JSON.stringify(value);
     localStorage.setItem(key, jsonString);
   } catch (lsErr) {
-    console.warn(`LocalStorage setItem failed for ${key} (quota exceeded). Stored in IndexedDB safely.`, lsErr);
-    try {
-      if (Array.isArray(value)) {
-        const lightweight = value.map((item: any) => {
-          if (item && typeof item === 'object' && item.imageUrl && item.imageUrl.length > 100000) {
-            return { ...item, imageUrl: undefined };
-          }
-          return item;
-        });
-        localStorage.setItem(key, JSON.stringify(lightweight));
-      }
-    } catch {
-      // Ignore LocalStorage fallback error
-    }
+    console.warn(`LocalStorage setItem failed for ${key}`, lsErr);
   }
 }
 
