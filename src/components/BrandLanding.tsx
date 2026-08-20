@@ -1074,7 +1074,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
               <div>
                 {/* Category Image Thumbnail Container */}
                 <div className={`w-full h-24 sm:h-28 bg-gray-50 border border-gray-100 group-hover:border-blue-100 rounded-xl mb-2.5 flex items-center justify-center overflow-hidden transition relative ${cat.imageUrl ? 'p-0' : 'p-1.5'}`}>
-                  <PartImage type={cat.name} imageUrl={cat.imageUrl} className={cat.imageUrl ? "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" : "max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"} />
+                  <PartImage type={cat.imageType || cat.name} imageUrl={cat.imageUrl} className={cat.imageUrl ? "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" : "max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300"} />
                   {cat.imageUrl && (
                     <span className="absolute top-1 right-1 bg-emerald-600/90 text-white text-[8px] font-mono font-bold px-1 rounded z-10 shadow-xs">
                       Фото

@@ -35,8 +35,8 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
 
   const normType = (effectiveType || '').toLowerCase();
 
-  // 1. RADIATOR (Радиаторы)
-  if (normType.includes('radiator') || normType.includes('радиатор')) {
+  // 1. RADIATOR / ENGINE (Двигатель и навесное оборудование)
+  if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
     return (
       <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="20" y="30" width="260" height="140" rx="8" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="3" />
@@ -62,8 +62,8 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
     );
   }
 
-  // 2. WATER PUMP (Насосы водяные)
-  if (normType.includes('waterpump') || normType.includes('водяны') || normType.includes('помпа')) {
+  // 2. WATER PUMP / FUEL (Элементы топливной системы)
+  if (normType.includes('waterpump') || normType.includes('водяны') || normType.includes('помпа') || normType.includes('топливн') || normType.includes('насос')) {
     return (
       <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="150" cy="100" r="75" fill="#E2E8F0" stroke="#64748B" strokeWidth="4" />
@@ -94,8 +94,8 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
     );
   }
 
-  // 3. FAN / SHROUD (Вентиляторы / Кожух)
-  if (normType.includes('fan') || normType.includes('вентилятор') || normType.includes('кожух')) {
+  // 3. FAN / SUSPENSION (Детали подвески)
+  if (normType.includes('fan') || normType.includes('вентилятор') || normType.includes('кожух') || normType.includes('подвеск') || normType.includes('амортизатор') || normType.includes('рычаг')) {
     return (
       <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Plastic Shroud Box */}
@@ -142,8 +142,8 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
     );
   }
 
-  // 4. THERMOSTAT (Термостаты)
-  if (normType.includes('thermostat') || normType.includes('термостат')) {
+  // 4. THERMOSTAT / BRAKE (Детали тормозной системы)
+  if (normType.includes('thermostat') || normType.includes('термостат') || normType.includes('тормозн') || normType.includes('диск') || normType.includes('колодк')) {
     return (
       <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M 100 120 L 140 60 L 210 90 L 170 150 Z" fill="#1E293B" stroke="#334155" strokeWidth="4" />
@@ -161,8 +161,8 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
     );
   }
 
-  // 5. AC COMPRESSOR (Компрессоры)
-  if (normType.includes('compressor') || normType.includes('компрессор')) {
+  // 5. AC COMPRESSOR / TRANSMISSION / STEERING (Трансмиссия / Рулевое / Вентиляция / Охлаждение)
+  if (normType.includes('compressor') || normType.includes('компрессор') || normType.includes('трансмисс') || normType.includes('рулев') || normType.includes('отоплен') || normType.includes('охлажден') || normType.includes('смазк') || normType.includes('электро') || normType.includes('освещен') || normType.includes('очистк')) {
     return (
       <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Main Aluminum Body Cylinder */}
