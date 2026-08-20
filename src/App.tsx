@@ -267,6 +267,13 @@ export default function App() {
       createdAt: new Date().toISOString(),
     };
     setWholesaleLeads((prev) => [newLead, ...prev]);
+
+    // Send email notification to rivavto01@gmail.com
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newLeadData),
+    }).catch((err) => console.warn('Error sending lead email:', err));
   };
 
   const handleDeleteWholesaleLead = (leadId: string) => {
