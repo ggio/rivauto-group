@@ -123,14 +123,12 @@ export default function App() {
           const effectiveCms = serverCatalog?.rivauto_cms_pages || cms;
 
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
-            const mergedCats = effectiveCats.map((c, idx) => {
+            const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
-              // Always prioritize user-uploaded image URL if present
-              const finalImg = c.imageUrl && c.imageUrl.trim() !== '' ? c.imageUrl : backupMatch?.imageUrl;
               return {
                 ...(backupMatch || {}),
                 ...c,
-                imageUrl: finalImg,
+                imageUrl: c.imageUrl !== undefined ? c.imageUrl : backupMatch?.imageUrl,
               };
             });
             setCategoriesList(mergedCats);
