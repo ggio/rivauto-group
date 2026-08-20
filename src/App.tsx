@@ -124,18 +124,18 @@ export default function App() {
 
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c, idx) => {
-              const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug) || BACKUP_CATS[idx % BACKUP_CATS.length];
-              const customImg = c.imageUrl && c.imageUrl.trim() !== '' ? c.imageUrl : undefined;
-              const fallbackImg = backupMatch?.imageUrl || "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=75&w=400&fm=webp&fit=crop";
+              const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
+              // Always prioritize user-uploaded image URL if present
+              const finalImg = c.imageUrl && c.imageUrl.trim() !== '' ? c.imageUrl : backupMatch?.imageUrl;
               return {
-                ...backupMatch,
+                ...(backupMatch || {}),
                 ...c,
-                imageUrl: customImg || fallbackImg,
+                imageUrl: finalImg,
               };
             });
             setCategoriesList(mergedCats);
           } else {
-            setCategoriesList(BACKUP_CATS);
+            setCategoriesList(cats && cats.length > 0 ? cats : BACKUP_CATS);
           }
 
           if (effectiveParts && Array.isArray(effectiveParts) && effectiveParts.length > 0) {
