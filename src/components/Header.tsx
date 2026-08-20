@@ -201,15 +201,6 @@ export const Header: React.FC<HeaderProps> = ({
               <Mail className="w-3 h-3 text-emerald-400" />
               <span className="font-bold text-white">rivavto01@gmail.com</span>
             </a>
-            <span className="text-gray-500 hidden sm:inline">|</span>
-            <a href="tel:87010829502" className="hidden sm:flex items-center space-x-1 hover:text-white transition">
-              <Phone className="w-3 h-3 text-[#1B4E9B]" />
-              <span className="font-bold text-white">8 701 082 9502</span>
-            </a>
-            <span className="text-gray-500 hidden md:inline">,</span>
-            <a href="tel:87010829201" className="hidden md:flex items-center space-x-1 hover:text-white transition">
-              <span className="font-bold text-white">8 701 082 9201</span>
-            </a>
           </div>
         </div>
       </div>

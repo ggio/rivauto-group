@@ -843,7 +843,6 @@ export default function App() {
             <div>
               <div className="text-gray-900 font-bold text-sm mb-2">Контакты B2B Отдела Продаж</div>
               <p className="text-gray-600 text-xs leading-relaxed">
-                Отдел оптовых продаж: <a href="tel:87010829502" className="text-[#1E4E8C] font-bold hover:underline">8 701 082 9502</a>, <a href="tel:87010829201" className="text-[#1E4E8C] font-bold hover:underline">8 701 082 9201</a><br />
                 Почта отдела продаж: <a href="mailto:rivavto01@gmail.com" className="text-[#1E4E8C] font-bold hover:underline">rivavto01@gmail.com</a>
               </p>
             </div>
