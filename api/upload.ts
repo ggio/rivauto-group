@@ -43,7 +43,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // 1. Try signed upload with account credentials
     if (cloudName && apiKey && apiSecret) {
       try {
-        const strToSign = `folder=${uploadFolder}&timestamp=${timestamp}${apiSecret}`;
+        const paramsToSign = uploadFolder ? `folder=${uploadFolder}&timestamp=${timestamp}` : `timestamp=${timestamp}`;
+        const strToSign = `${paramsToSign}${apiSecret}`;
+        
         const encoder = new TextEncoder();
         const data = encoder.encode(strToSign);
         const hashBuffer = await crypto.subtle.digest('SHA-1', data);
@@ -52,7 +54,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         const formData = new URLSearchParams();
         formData.append('file', base64Data);
-        formData.append('folder', uploadFolder);
+        if (uploadFolder) formData.append('folder', uploadFolder);
         formData.append('api_key', apiKey);
         formData.append('timestamp', timestamp.toString());
         formData.append('signature', signature);
@@ -64,6 +66,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const cloudJson = await cloudRes.json();
         if (cloudRes.ok && cloudJson.secure_url) {
           return res.status(200).json({ success: true, url: cloudJson.secure_url });
+        } else {
+          console.error('Cloudinary API upload error:', cloudJson);
         }
       } catch (e) {
         console.warn('Signed Cloudinary upload failed:', e);

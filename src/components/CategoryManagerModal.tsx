@@ -133,7 +133,7 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
             const finalBase64 = canvas.toDataURL('image/jpeg', 0.85);
             setImageUrl(finalBase64);
 
-            // Auto-commit immediately if currently editing an existing category
+            // Auto-commit locally first
             if (editingId) {
               onUpdateCategory({
                 id: editingId,
@@ -145,6 +145,31 @@ export const CategoryManagerModal: React.FC<CategoryManagerModalProps> = ({
                 description: description.trim() || undefined,
               });
             }
+
+            // Upload in background to Cloudinary to replace Data URL with permanent HTTPS CDN URL
+            fetch('/api/upload', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ file: finalBase64, folder: 'rivauto_categories' }),
+            })
+              .then((res) => res.json())
+              .then((json) => {
+                if (json.success && json.url) {
+                  setImageUrl(json.url);
+                  if (editingId) {
+                    onUpdateCategory({
+                      id: editingId,
+                      name: name.trim(),
+                      slug: slug.trim(),
+                      count: Number(count) || 0,
+                      imageType: imageType,
+                      imageUrl: json.url,
+                      description: description.trim() || undefined,
+                    });
+                  }
+                }
+              })
+              .catch((err) => console.warn('Background upload to Cloudinary failed:', err));
           }
         } catch (err) {
           console.error('Error compressing image:', err);
