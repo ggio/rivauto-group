@@ -245,6 +245,7 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
                     src={customImg}
                     alt="Dextra background"
                     className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
                   />
                 )}
                 <div className={`flex flex-col justify-end h-full ${minHeightClass} relative z-10`}>
@@ -278,6 +279,7 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
                     src={customImg}
                     alt="Kaido background"
                     className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
                   />
                 )}
                 <div className={`flex flex-col justify-end h-full ${minHeightClass} relative z-10`}>
@@ -311,6 +313,7 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
                     src={customImg}
                     alt="Katsumoto background"
                     className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
                   />
                 )}
                 <div className={`flex flex-col justify-end h-full ${minHeightClass} relative z-10`}>
@@ -344,6 +347,7 @@ export const BrandShowcaseGrid: React.FC<BrandShowcaseGridProps> = ({
                   src={customLuxorImg}
                   alt="Luxor background"
                   className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => { (e.currentTarget as HTMLElement).style.display = 'none'; }}
                 />
               )}
               <div className={`flex flex-col justify-end h-full ${minHeightClass} relative z-10`}>
