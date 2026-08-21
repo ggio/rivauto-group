@@ -182,7 +182,17 @@ export default function App() {
             setAppearanceSettings(BACKUP_THEME);
           }
 
-          if (effectiveCms) setCmsPages((prev) => ({ ...BACKUP_CMS, ...prev, ...effectiveCms }));
+          if (effectiveCms) {
+            setCmsPages((prev) => ({
+              ...BACKUP_CMS,
+              ...prev,
+              ...effectiveCms,
+              about: {
+                ...(effectiveCms.about || BACKUP_CMS.about),
+                articles: BACKUP_CMS.about.articles
+              }
+            }));
+          }
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
         }
