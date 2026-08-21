@@ -177,10 +177,10 @@ export default function App() {
               ...BACKUP_THEME,
               ...prev,
               ...effectiveTheme,
-              dextraBgImage: (effectiveTheme?.dextraBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.dextraBgImage : DEFAULT_APPEARANCE_SETTINGS.dextraBgImage) || DEFAULT_APPEARANCE_SETTINGS.dextraBgImage,
-              kaidoBgImage: (effectiveTheme?.kaidoBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.kaidoBgImage : DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage) || DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage,
-              katsumotoBgImage: (effectiveTheme?.katsumotoBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.katsumotoBgImage : DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage) || DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage,
-              luxorBgImage: (effectiveTheme?.luxorBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.luxorBgImage : DEFAULT_APPEARANCE_SETTINGS.luxorBgImage) || DEFAULT_APPEARANCE_SETTINGS.luxorBgImage,
+              dextraBgImage: effectiveTheme?.dextraBgImage || DEFAULT_APPEARANCE_SETTINGS.dextraBgImage,
+              kaidoBgImage: effectiveTheme?.kaidoBgImage || DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage,
+              katsumotoBgImage: effectiveTheme?.katsumotoBgImage || DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage,
+              luxorBgImage: effectiveTheme?.luxorBgImage || DEFAULT_APPEARANCE_SETTINGS.luxorBgImage,
             }));
           } else {
             setAppearanceSettings(BACKUP_THEME);
