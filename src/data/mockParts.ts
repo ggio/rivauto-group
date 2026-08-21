@@ -7,7 +7,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "name": "Все категории",
     "slug": "all",
     "count": 12400,
-    "imageUrl": "https://images.unsplash.com/photo-1486006920555-c77dce18193b?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_engine.jpg"
   },
   {
     "id": "radiators",
@@ -15,7 +15,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "radiators",
     "count": 2334,
     "imageType": "radiator",
-    "imageUrl": "https://res.cloudinary.com/iupbflicf/image/upload/v1787222973/1.webp"
+    "imageUrl": "/cat_engine.jpg"
   },
   {
     "id": "water-pumps",
@@ -55,7 +55,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "ac-compressors",
     "count": 424,
     "imageType": "compressor",
-    "imageUrl": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_steering.jpg"
   },
   {
     "id": "ac-comp",
@@ -63,7 +63,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "ac-comp",
     "count": 182,
     "imageType": "compressor",
-    "imageUrl": "https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_heating.jpg"
   },
   {
     "id": "air-compressors",
@@ -71,7 +71,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "air-compressors",
     "count": 59,
     "imageType": "compressor",
-    "imageUrl": "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_cooling.jpg"
   },
   {
     "id": "power-steering",
@@ -79,7 +79,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "power-steering",
     "count": 133,
     "imageType": "waterpump",
-    "imageUrl": "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_lubrication.jpg"
   },
   {
     "id": "turbo",
@@ -87,7 +87,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "turbo",
     "count": 225,
     "imageType": "turbo",
-    "imageUrl": "https://images.unsplash.com/photo-1508974239320-0a029497e820?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_electrical.jpg"
   },
   {
     "id": "filtration",
@@ -95,7 +95,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "filtration",
     "count": 1177,
     "imageType": "filter",
-    "imageUrl": "https://images.unsplash.com/photo-1563720223185-11003d516935?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_lighting.jpg"
   },
   {
     "id": "gaskets",
@@ -103,7 +103,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "gaskets",
     "count": 416,
     "imageType": "gasket",
-    "imageUrl": "https://images.unsplash.com/photo-1502877338535-766e1452684a?q=75&w=600&fm=webp&fit=crop"
+    "imageUrl": "/cat_wipers.jpg"
   }
 ];
 

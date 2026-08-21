@@ -134,11 +134,7 @@ export default function App() {
             const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
               const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
-              // Prioritize Cloudinary HTTPS URL over local Data URL
-              let activeImage = c.imageUrl || localMatch?.imageUrl || backupMatch?.imageUrl;
-              if (backupMatch?.imageUrl && backupMatch.imageUrl.startsWith('https://res.cloudinary.com')) {
-                activeImage = backupMatch.imageUrl;
-              }
+              let activeImage = backupMatch?.imageUrl || c.imageUrl || localMatch?.imageUrl;
               if (c.imageUrl && c.imageUrl.startsWith('https://res.cloudinary.com')) {
                 activeImage = c.imageUrl;
               }
