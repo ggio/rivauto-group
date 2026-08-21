@@ -177,10 +177,10 @@ export default function App() {
               ...BACKUP_THEME,
               ...prev,
               ...effectiveTheme,
-              dextraBgImage: effectiveTheme?.dextraBgImage || DEFAULT_APPEARANCE_SETTINGS.dextraBgImage,
-              kaidoBgImage: effectiveTheme?.kaidoBgImage || DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage,
-              katsumotoBgImage: effectiveTheme?.katsumotoBgImage || DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage,
-              luxorBgImage: effectiveTheme?.luxorBgImage || DEFAULT_APPEARANCE_SETTINGS.luxorBgImage,
+              dextraBgImage: '/assets/site-images/DEXTRA_80KB.webp',
+              kaidoBgImage: '/assets/site-images/KAIDO_80KB.jpg',
+              katsumotoBgImage: '/assets/site-images/KATSUMOTO_80KB.jpg',
+              luxorBgImage: '/assets/site-images/LUXOR_80KB.jpg',
             }));
           } else {
             setAppearanceSettings(BACKUP_THEME);
