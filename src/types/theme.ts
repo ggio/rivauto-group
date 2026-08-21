@@ -227,9 +227,9 @@ export const DEFAULT_APPEARANCE_SETTINGS: SiteAppearanceSettings = {
   currencySymbol: '₸',
   brandCardHeight: 'medium',
   dextraBgImage: '/assets/site-images/DEXTRA_80KB.webp',
-  kaidoBgImage: '/assets/site-images/KAIDO_80KB.jpg',
-  katsumotoBgImage: '/assets/site-images/KATSUMOTO_80KB.jpg',
-  luxorBgImage: '/assets/site-images/LUXOR_80KB.jpg',
+  kaidoBgImage: 'https://res.cloudinary.com/iupbflicf/image/upload/v1787224722/KAIDO_80KB.jpg',
+  katsumotoBgImage: 'https://res.cloudinary.com/iupbflicf/image/upload/v1787224722/KATSUMOTO_80KB.jpg',
+  luxorBgImage: 'https://res.cloudinary.com/iupbflicf/image/upload/v1787224723/LUXOR_80KB.jpg',
 
   kaidoHeroBanner: '/assets/site-images/Каидо1.png',
   katsumotoHeroBanner: '/assets/site-images/Катсумото1.png',

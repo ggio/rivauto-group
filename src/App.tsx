@@ -171,10 +171,10 @@ export default function App() {
               ...BACKUP_THEME,
               ...prev,
               ...effectiveTheme,
-              dextraBgImage: effectiveTheme.dextraBgImage || BACKUP_THEME.dextraBgImage,
-              kaidoBgImage: effectiveTheme.kaidoBgImage || BACKUP_THEME.kaidoBgImage,
-              katsumotoBgImage: effectiveTheme.katsumotoBgImage || BACKUP_THEME.katsumotoBgImage,
-              luxorBgImage: effectiveTheme.luxorBgImage || BACKUP_THEME.luxorBgImage,
+              dextraBgImage: (BACKUP_THEME.dextraBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.dextraBgImage : effectiveTheme.dextraBgImage) || BACKUP_THEME.dextraBgImage,
+              kaidoBgImage: (BACKUP_THEME.kaidoBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.kaidoBgImage : effectiveTheme.kaidoBgImage) || BACKUP_THEME.kaidoBgImage,
+              katsumotoBgImage: (BACKUP_THEME.katsumotoBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.katsumotoBgImage : effectiveTheme.katsumotoBgImage) || BACKUP_THEME.katsumotoBgImage,
+              luxorBgImage: (BACKUP_THEME.luxorBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.luxorBgImage : effectiveTheme.luxorBgImage) || BACKUP_THEME.luxorBgImage,
             }));
           } else {
             setAppearanceSettings(BACKUP_THEME);
