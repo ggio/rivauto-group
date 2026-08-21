@@ -24,7 +24,13 @@ import { savePersistentData, syncLoadPersistentData, loadPersistentData, loadSer
 import { INITIAL_FULL_BACKUP_DATA } from './data/initialData';
 import { Wrench, ChevronRight, Plus, Trash2, RefreshCw, Upload, ShieldAlert, Sparkles, Building2, Users } from 'lucide-react';
 
-const BACKUP_THEME = { ...DEFAULT_APPEARANCE_SETTINGS, ...((INITIAL_FULL_BACKUP_DATA.themeSettings || INITIAL_FULL_BACKUP_DATA.rivauto_theme_settings || {}) as SiteAppearanceSettings) };
+const BACKUP_THEME = {
+  ...DEFAULT_APPEARANCE_SETTINGS,
+  ...((INITIAL_FULL_BACKUP_DATA.themeSettings || INITIAL_FULL_BACKUP_DATA.rivauto_theme_settings || {}) as SiteAppearanceSettings),
+  kaidoBgImage: DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage,
+  katsumotoBgImage: DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage,
+  luxorBgImage: DEFAULT_APPEARANCE_SETTINGS.luxorBgImage,
+};
 const BACKUP_PARTS = (INITIAL_FULL_BACKUP_DATA.luxor_parts_list && INITIAL_FULL_BACKUP_DATA.luxor_parts_list.length > 0 ? INITIAL_FULL_BACKUP_DATA.luxor_parts_list : MOCK_PARTS) as LuxorPart[];
 const BACKUP_CATS = (INITIAL_FULL_BACKUP_DATA.luxor_categories && INITIAL_FULL_BACKUP_DATA.luxor_categories.length > 0 ? INITIAL_FULL_BACKUP_DATA.luxor_categories : LUXOR_CATEGORIES) as CategoryItem[];
 const BACKUP_BRANDS = (INITIAL_FULL_BACKUP_DATA.rivauto_brands && INITIAL_FULL_BACKUP_DATA.rivauto_brands.length > 0 ? INITIAL_FULL_BACKUP_DATA.rivauto_brands : INITIAL_BRANDS) as BrandItem[];
@@ -171,10 +177,10 @@ export default function App() {
               ...BACKUP_THEME,
               ...prev,
               ...effectiveTheme,
-              dextraBgImage: (BACKUP_THEME.dextraBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.dextraBgImage : effectiveTheme.dextraBgImage) || BACKUP_THEME.dextraBgImage,
-              kaidoBgImage: (BACKUP_THEME.kaidoBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.kaidoBgImage : effectiveTheme.kaidoBgImage) || BACKUP_THEME.kaidoBgImage,
-              katsumotoBgImage: (BACKUP_THEME.katsumotoBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.katsumotoBgImage : effectiveTheme.katsumotoBgImage) || BACKUP_THEME.katsumotoBgImage,
-              luxorBgImage: (BACKUP_THEME.luxorBgImage?.startsWith('https://res.cloudinary.com') ? BACKUP_THEME.luxorBgImage : effectiveTheme.luxorBgImage) || BACKUP_THEME.luxorBgImage,
+              dextraBgImage: (effectiveTheme?.dextraBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.dextraBgImage : DEFAULT_APPEARANCE_SETTINGS.dextraBgImage) || DEFAULT_APPEARANCE_SETTINGS.dextraBgImage,
+              kaidoBgImage: (effectiveTheme?.kaidoBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.kaidoBgImage : DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage) || DEFAULT_APPEARANCE_SETTINGS.kaidoBgImage,
+              katsumotoBgImage: (effectiveTheme?.katsumotoBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.katsumotoBgImage : DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage) || DEFAULT_APPEARANCE_SETTINGS.katsumotoBgImage,
+              luxorBgImage: (effectiveTheme?.luxorBgImage?.startsWith('https://res.cloudinary.com') ? effectiveTheme.luxorBgImage : DEFAULT_APPEARANCE_SETTINGS.luxorBgImage) || DEFAULT_APPEARANCE_SETTINGS.luxorBgImage,
             }));
           } else {
             setAppearanceSettings(BACKUP_THEME);
