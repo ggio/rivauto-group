@@ -460,31 +460,34 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="whitespace-nowrap font-bold">Каталог ({partsCount})</span>
             </button>
 
-            {/* Page 1: О компании */}
-            <button
-              onClick={() => setActiveNav('about')}
-              className={`h-9 px-3.5 rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 flex items-center space-x-1.5 border text-xs font-sans ${
-                activeNav === 'about'
-                  ? 'bg-slate-900 text-emerald-300 border-2 border-emerald-400 font-black shadow-md shadow-emerald-400/15 scale-[1.02]'
-                  : 'bg-slate-900/90 text-slate-200 border-slate-700/80 hover:bg-slate-800 hover:border-emerald-400/80 hover:text-white'
-              }`}
-            >
-              <Building2 className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400" />
-              <span className="whitespace-nowrap font-bold">{aboutNavTitle}</span>
-            </button>
+            {/* Page 1: О компании & Page 2: Custom / Партнерам (Только для Администратора) */}
+            {isAdmin && (
+              <>
+                <button
+                  onClick={() => setActiveNav('about')}
+                  className={`h-9 px-3.5 rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 flex items-center space-x-1.5 border text-xs font-sans ${
+                    activeNav === 'about'
+                      ? 'bg-slate-900 text-emerald-300 border-2 border-emerald-400 font-black shadow-md shadow-emerald-400/15 scale-[1.02]'
+                      : 'bg-slate-900/90 text-slate-200 border-slate-700/80 hover:bg-slate-800 hover:border-emerald-400/80 hover:text-white'
+                  }`}
+                >
+                  <Building2 className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400" />
+                  <span className="whitespace-nowrap font-bold">{aboutNavTitle}</span>
+                </button>
 
-            {/* Page 2: Custom / Партнерам */}
-            <button
-              onClick={() => setActiveNav('custom_page')}
-              className={`h-9 px-3.5 rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 flex items-center space-x-1.5 border text-xs font-sans ${
-                activeNav === 'custom_page'
-                  ? 'bg-slate-900 text-sky-300 border-2 border-sky-400 font-black shadow-md shadow-sky-400/15 scale-[1.02]'
-                  : 'bg-slate-900/90 text-slate-200 border-slate-700/80 hover:bg-slate-800 hover:border-sky-400/80 hover:text-white'
-              }`}
-            >
-              <Users className="w-3.5 h-3.5 flex-shrink-0 text-sky-400" />
-              <span className="whitespace-nowrap font-bold">{customNavTitle}</span>
-            </button>
+                <button
+                  onClick={() => setActiveNav('custom_page')}
+                  className={`h-9 px-3.5 rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 flex items-center space-x-1.5 border text-xs font-sans ${
+                    activeNav === 'custom_page'
+                      ? 'bg-slate-900 text-sky-300 border-2 border-sky-400 font-black shadow-md shadow-sky-400/15 scale-[1.02]'
+                      : 'bg-slate-900/90 text-slate-200 border-slate-700/80 hover:bg-slate-800 hover:border-sky-400/80 hover:text-white'
+                  }`}
+                >
+                  <Users className="w-3.5 h-3.5 flex-shrink-0 text-sky-400" />
+                  <span className="whitespace-nowrap font-bold">{customNavTitle}</span>
+                </button>
+              </>
+            )}
 
             {/* Admin-Only Navigation Links */}
             {isAdmin && (
@@ -584,21 +587,25 @@ export const Header: React.FC<HeaderProps> = ({
             <span>{appearanceSettings?.allGroupNavTitle || 'Вся Группа'}</span>
           </button>
 
-          <button
-            onClick={() => { setActiveNav('about'); setMobileMenuOpen(false); }}
-            className="w-full text-left px-3 py-2 rounded-lg text-gray-800 hover:bg-gray-100 flex items-center space-x-2 font-semibold"
-          >
-            <Building2 className="w-4 h-4 text-emerald-600" />
-            <span>{aboutNavTitle}</span>
-          </button>
+          {isAdmin && (
+            <>
+              <button
+                onClick={() => { setActiveNav('about'); setMobileMenuOpen(false); }}
+                className="w-full text-left px-3 py-2 rounded-lg text-gray-800 hover:bg-gray-100 flex items-center space-x-2 font-semibold"
+              >
+                <Building2 className="w-4 h-4 text-emerald-600" />
+                <span>{aboutNavTitle}</span>
+              </button>
 
-          <button
-            onClick={() => { setActiveNav('custom_page'); setMobileMenuOpen(false); }}
-            className="w-full text-left px-3 py-2 rounded-lg text-gray-800 hover:bg-gray-100 flex items-center space-x-2 font-semibold"
-          >
-            <Users className="w-4 h-4 text-amber-600" />
-            <span>{customNavTitle}</span>
-          </button>
+              <button
+                onClick={() => { setActiveNav('custom_page'); setMobileMenuOpen(false); }}
+                className="w-full text-left px-3 py-2 rounded-lg text-gray-800 hover:bg-gray-100 flex items-center space-x-2 font-semibold"
+              >
+                <Users className="w-4 h-4 text-amber-600" />
+                <span>{customNavTitle}</span>
+              </button>
+            </>
+          )}
 
           <button
             onClick={() => { setActiveNav('catalog'); setMobileMenuOpen(false); }}

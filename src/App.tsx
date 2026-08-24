@@ -91,6 +91,14 @@ export default function App() {
     return syncLoadPersistentData('luxor_is_admin', false);
   });
 
+  // Redirect non-admin guests away from admin-only CMS pages (About & Partners)
+  useEffect(() => {
+    if (!isAdmin && (activeNav === 'about' || activeNav === 'custom_page' || activeNav === 'admin' || activeNav === 'architecture' || activeNav === 'quality' || activeNav === 'ai')) {
+      setActiveNav('landing');
+    }
+  }, [isAdmin, activeNav]);
+
+
   // Hydration state to prevent initial React state from overwriting IndexedDB before reading completes
   const [isHydrated, setIsHydrated] = useState(false);
 
