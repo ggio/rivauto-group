@@ -24,7 +24,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ success: false, error: 'Заполните обязательные поля' });
     }
 
-    const recipientEmail = 'rivavto01@gmail.com';
+    const recipientEmail = 'm3riv@bk.ru';
     const emailSubject = `🚗 Заявка на КП RivAuto Group от: ${companyName}`;
     const emailContent = `
 Новая оптовая заявка с сайта RIVAUTO.GROUP
@@ -38,9 +38,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 • Дата заявки: ${new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Almaty' })}
     `.trim();
 
-    // 1. Send via FormSubmit service directly to rivavto01@gmail.com
+    // 1. Send via FormSubmit service directly to m3riv@bk.ru
     try {
-      const fsRes = await fetch('https://formsubmit.co/ajax/rivavto01@gmail.com', {
+      const fsRes = await fetch('https://formsubmit.co/ajax/m3riv@bk.ru', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       return res.status(200).json({
         success: true,
-        message: 'Заявка принята и отправлена менеджерам на rivavto01@gmail.com',
+        message: 'Заявка принята и отправлена менеджерам на m3riv@bk.ru',
         result: fsJson,
       });
     } catch (err: any) {
@@ -73,7 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     return res.status(200).json({
       success: true,
-      message: 'Заявка принята и отправлена менеджерам на rivavto01@gmail.com',
+      message: 'Заявка принята и отправлена менеджерам на m3riv@bk.ru',
     });
   } catch (err: any) {
     console.error('Send email error:', err);

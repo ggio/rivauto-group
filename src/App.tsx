@@ -324,7 +324,7 @@ export default function App() {
     };
     setWholesaleLeads((prev) => [newLead, ...prev]);
 
-    // Send email notification to rivavto01@gmail.com
+    // Send email notification to m3riv@bk.ru
     fetch('/api/send-email', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
