@@ -17,18 +17,6 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
   const effectiveType = type || (part ? `${part.category || ''} ${part.type || ''} ${part.title || ''}` : '');
   const normType = (effectiveType || '').toLowerCase();
 
-  // 1. RADIATOR / ENGINE (Двигатель и навесное оборудование — ALWAYS RENDER EMBEDDED BASE64 PHOTO)
-  if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
-    return (
-      <img
-        src={ENGINE_BASE64_IMAGE}
-        alt={alt}
-        className={className}
-        loading="eager"
-      />
-    );
-  }
-
   // Reset error state if imageUrl changes
   React.useEffect(() => {
     setImgError(false);
@@ -43,6 +31,18 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
         className={className}
         loading="eager"
         onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  // 1. ENGINE CATEGORY CARD ONLY
+  if (normType === 'radiators' || normType === 'двигатель и навесное оборудование') {
+    return (
+      <img
+        src={ENGINE_BASE64_IMAGE}
+        alt={alt}
+        className={className}
+        loading="eager"
       />
     );
   }
