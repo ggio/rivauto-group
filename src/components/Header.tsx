@@ -554,13 +554,15 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Добавить деталь</span>
               </button>
             ) : (
-              <button
-                onClick={() => setActiveNav('catalog')}
+              <a
+                href="https://drive.google.com/file/d/1Dtl751dTcuSMMy_H8g3gaZ5t26vovxKk/preview?pli=1"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="h-9 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-black text-xs transition-all shadow-md shadow-amber-500/20 flex items-center space-x-1.5 scale-[1.01] hover:scale-[1.03]"
               >
-                <ShoppingCart className="w-4 h-4 text-slate-950" />
-                <span>Запрос цен B2B</span>
-              </button>
+                <Building2 className="w-4 h-4 text-slate-950" />
+                <span>О компании</span>
+              </a>
             )}
           </div>
 
