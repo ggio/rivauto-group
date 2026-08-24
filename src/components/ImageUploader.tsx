@@ -39,10 +39,47 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     }
 
     setUploadState('uploading');
-    setUploadProgress(0);
+    setUploadProgress(20);
     setErrorMsg('');
 
     try {
+      // 1. Direct Client-side Upload to Cloudinary
+      const cloudFormData = new FormData();
+      cloudFormData.append('file', file);
+      cloudFormData.append('upload_preset', 'ml_default');
+      cloudFormData.append('folder', folder || 'rivauto_products');
+
+      setUploadProgress(50);
+
+      const cloudRes = await fetch('https://api.cloudinary.com/v1_1/dkg81432k/image/upload', {
+        method: 'POST',
+        body: cloudFormData,
+      });
+
+      const cloudJson = await cloudRes.json();
+      if (cloudRes.ok && cloudJson.secure_url) {
+        setUploadProgress(100);
+        onChange(cloudJson.secure_url);
+        setUploadState('success');
+        setTimeout(() => setUploadState('idle'), 3000);
+        return;
+      }
+
+      // 2. Secondary Cloudinary Cloud Account
+      const cloudRes2 = await fetch('https://api.cloudinary.com/v1_1/iupbflicf/image/upload', {
+        method: 'POST',
+        body: cloudFormData,
+      });
+      const cloudJson2 = await cloudRes2.json();
+      if (cloudRes2.ok && cloudJson2.secure_url) {
+        setUploadProgress(100);
+        onChange(cloudJson2.secure_url);
+        setUploadState('success');
+        setTimeout(() => setUploadState('idle'), 3000);
+        return;
+      }
+
+      // 3. Fallback to Local Base64 if Cloudinary API fails
       const base64Data = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => resolve(reader.result as string);
@@ -50,36 +87,27 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         reader.readAsDataURL(file);
       });
 
-      // Simulate progress while uploading
-      const progressInterval = setInterval(() => {
-        setUploadProgress(prev => Math.min(prev + 10, 85));
-      }, 200);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          file: base64Data,
-          folder: folder,
-        }),
-      });
-
-      clearInterval(progressInterval);
       setUploadProgress(100);
-
-      const data = await response.json();
-
-      if (data.success && data.url) {
-        onChange(data.url);
+      onChange(base64Data);
+      setUploadState('success');
+      setTimeout(() => setUploadState('idle'), 3000);
+    } catch (err: any) {
+      try {
+        const base64Data = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = (err) => reject(err);
+          reader.readAsDataURL(file);
+        });
+        setUploadProgress(100);
+        onChange(base64Data);
         setUploadState('success');
         setTimeout(() => setUploadState('idle'), 3000);
-      } else {
-        throw new Error(data.error || 'Ошибка загрузки');
+      } catch (fallbackErr) {
+        setErrorMsg('Ошибка загрузки. Попробуйте снова.');
+        setUploadState('error');
+        setTimeout(() => setUploadState('idle'), 5000);
       }
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Ошибка загрузки. Попробуйте снова.');
-      setUploadState('error');
-      setTimeout(() => setUploadState('idle'), 5000);
     }
   }, [folder, onChange]);
 
