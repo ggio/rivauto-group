@@ -191,9 +191,17 @@ export default function App() {
           }
 
           if (effectiveCms && Object.keys(effectiveCms).length > 0) {
-            setCmsPages(effectiveCms);
+            const cleanedCms: Record<string, CmsPageData> = {};
+            for (const k in effectiveCms) {
+              cleanedCms[k] = {
+                ...effectiveCms[k],
+                bannerImage: '',
+                articles: [],
+              };
+            }
+            setCmsPages(cleanedCms);
           } else {
-            setCmsPages(BACKUP_CMS);
+            setCmsPages(INITIAL_CMS_PAGES);
           }
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);

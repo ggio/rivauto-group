@@ -511,7 +511,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
                   className="w-full h-auto object-contain pointer-events-none drop-shadow-2xl select-none"
                   style={{ opacity: currentLogoOpacity / 100 }}
                 />
-              ) : (
+              ) : isAdmin ? (
                 <div className="border border-dashed border-white/30 hover:border-amber-400 bg-slate-900/40 hover:bg-slate-900/70 backdrop-blur-xs rounded-2xl p-3 text-center transition shadow-lg flex flex-col items-center space-y-2">
                   <button
                     type="button"
@@ -533,7 +533,7 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
                     <span>или вставить URL изображения</span>
                   </button>
                 </div>
-              )}
+              ) : null}
 
               <input
                 type="file"
