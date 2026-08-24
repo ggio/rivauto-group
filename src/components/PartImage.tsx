@@ -38,27 +38,15 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
   // 1. RADIATOR / ENGINE (Двигатель и навесное оборудование)
   if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
     return (
-      <svg className={className} viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="30" width="260" height="140" rx="8" fill="#F8FAFC" stroke="#94A3B8" strokeWidth="3" />
-        {/* Side Tanks */}
-        <rect x="20" y="25" width="24" height="150" rx="6" fill="#1E293B" />
-        <rect x="256" y="25" width="24" height="150" rx="6" fill="#1E293B" />
-        {/* Hose Connections */}
-        <rect x="5" y="40" width="20" height="20" rx="4" fill="#334155" />
-        <rect x="275" y="130" width="20" height="20" rx="4" fill="#334155" />
-        {/* Cooling Fins / Grid Lines */}
-        {Array.from({ length: 18 }).map((_, i) => (
-          <line key={i} x1="48" y1={40 + i * 7} x2="252" y2={40 + i * 7} stroke="#CBD5E1" strokeWidth="2.5" />
-        ))}
-        {Array.from({ length: 12 }).map((_, i) => (
-          <line key={i} x1={60 + i * 16} y1="35" x2={60 + i * 16} y2="165" stroke="#94A3B8" strokeWidth="1.5" strokeDasharray="4 2" />
-        ))}
-        {/* Mounting Tabs */}
-        <circle cx="32" cy="15" r="5" fill="#475569" />
-        <circle cx="268" cy="15" r="5" fill="#475569" />
-        <circle cx="32" cy="185" r="5" fill="#475569" />
-        <circle cx="268" cy="185" r="5" fill="#475569" />
-      </svg>
+      <img
+        src="/assets/site-images/cat_engine_main.webp"
+        alt={alt}
+        className={className}
+        loading="eager"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp";
+        }}
+      />
     );
   }
 
