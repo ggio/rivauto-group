@@ -39,12 +39,12 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
   if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
     return (
       <img
-        src="/assets/site-images/cat_engine_main.webp"
+        src="https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp"
         alt={alt}
         className={className}
         loading="eager"
         onError={(e) => {
-          (e.target as HTMLImageElement).src = "https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp";
+          (e.target as HTMLImageElement).src = "/assets/site-images/Каталог групп/элементы_двигателя_60КБ.webp";
         }}
       />
     );
