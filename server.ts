@@ -83,6 +83,40 @@ app.post('/api/catalog', (req, res) => {
 
     fs.writeFileSync(CATALOG_FILE, JSON.stringify(updated, null, 2), 'utf-8');
 
+    // ─── Source Code File Persistence ───────────────────────────────────────────
+    // 1. Update src/data/mockCmsPages.ts directly in code
+    if (updated.rivauto_cms_pages && Object.keys(updated.rivauto_cms_pages).length > 0) {
+      try {
+        const cmsPagesPath = path.join(process.cwd(), 'src', 'data', 'mockCmsPages.ts');
+        const tsContent = `import { CmsPageData } from '../types/cms';\n\nexport const INITIAL_CMS_PAGES: Record<string, CmsPageData> = ${JSON.stringify(updated.rivauto_cms_pages, null, 2)};\n`;
+        fs.writeFileSync(cmsPagesPath, tsContent, 'utf-8');
+        console.log('[Code Persistence] Successfully updated src/data/mockCmsPages.ts directly in source code!');
+      } catch (cmsErr) {
+        console.error('Error writing to mockCmsPages.ts:', cmsErr);
+      }
+    }
+
+    // 2. Update src/data/initialData.ts directly in code
+    try {
+      const initialDataPath = path.join(process.cwd(), 'src', 'data', 'initialData.ts');
+      if (fs.existsSync(initialDataPath)) {
+        const initialDataObj = {
+          timestamp: new Date().toISOString(),
+          version: '1.0.0',
+          themeSettings: updated.rivauto_theme_settings || {},
+          luxor_parts_list: updated.luxor_parts_list || [],
+          luxor_categories: updated.luxor_categories || [],
+          rivauto_brands: updated.rivauto_brands || [],
+          rivauto_cms_pages: updated.rivauto_cms_pages || {},
+        };
+        const tsInitialContent = `export const INITIAL_FULL_BACKUP_DATA = ${JSON.stringify(initialDataObj, null, 2)};\n`;
+        fs.writeFileSync(initialDataPath, tsInitialContent, 'utf-8');
+        console.log('[Code Persistence] Successfully updated src/data/initialData.ts directly in source code!');
+      }
+    } catch (initErr) {
+      console.error('Error writing to initialData.ts:', initErr);
+    }
+
     // Async backup to Cloudinary raw storage for permanent cross-device persistence
     if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
       try {
@@ -104,6 +138,7 @@ app.post('/api/catalog', (req, res) => {
         console.error('Cloudinary upload_stream error:', cloudErr);
       }
     }
+
 
     return res.json({ success: true, updatedAt: updated.updatedAt });
   } catch (error: any) {
