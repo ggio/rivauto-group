@@ -142,9 +142,9 @@ export default function App() {
             const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
               const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
-              let activeImage = backupMatch?.imageUrl || c.imageUrl || localMatch?.imageUrl;
-              if (c.imageUrl && c.imageUrl.startsWith('https://res.cloudinary.com')) {
-                activeImage = c.imageUrl;
+              let activeImage = c.imageUrl || backupMatch?.imageUrl || localMatch?.imageUrl;
+              if (c.slug === 'radiators' || c.id === 'radiators' || c.name.includes('Двигатель')) {
+                activeImage = 'https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp';
               }
               return {
                 ...(backupMatch || {}),
