@@ -182,26 +182,10 @@ export default function App() {
             setAppearanceSettings(BACKUP_THEME);
           }
 
-          if (effectiveCms) {
-            setCmsPages((prev) => {
-              const serverAbout = effectiveCms.about || cms?.about;
-              const mergedAbout = serverAbout ? {
-                ...BACKUP_CMS.about,
-                ...serverAbout,
-                articles: (serverAbout.articles && Array.isArray(serverAbout.articles) && serverAbout.articles.length > 0)
-                  ? serverAbout.articles
-                  : (cms?.about?.articles && Array.isArray(cms.about.articles) && cms.about.articles.length > 0)
-                    ? cms.about.articles
-                    : BACKUP_CMS.about.articles
-              } : BACKUP_CMS.about;
-
-              return {
-                ...BACKUP_CMS,
-                ...prev,
-                ...effectiveCms,
-                about: mergedAbout,
-              };
-            });
+          if (effectiveCms && Object.keys(effectiveCms).length > 0) {
+            setCmsPages(effectiveCms);
+          } else {
+            setCmsPages(BACKUP_CMS);
           }
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
@@ -228,8 +212,8 @@ export default function App() {
         const serverCatalog = await loadServerCatalog();
         if (!serverCatalog) return;
 
-        if (serverCatalog.rivauto_cms_pages) {
-          setCmsPages((prev) => ({ ...prev, ...serverCatalog.rivauto_cms_pages }));
+        if (serverCatalog.rivauto_cms_pages && Object.keys(serverCatalog.rivauto_cms_pages).length > 0) {
+          setCmsPages(serverCatalog.rivauto_cms_pages);
         }
         if (serverCatalog.luxor_categories && Array.isArray(serverCatalog.luxor_categories) && serverCatalog.luxor_categories.length > 0) {
           setCategoriesList(serverCatalog.luxor_categories);
@@ -248,7 +232,7 @@ export default function App() {
       }
     };
 
-    const interval = setInterval(syncWithServer, 15000);
+    const interval = setInterval(syncWithServer, 30000);
     window.addEventListener('focus', syncWithServer);
 
     return () => {
@@ -256,6 +240,7 @@ export default function App() {
       window.removeEventListener('focus', syncWithServer);
     };
   }, [isHydrated]);
+
 
   // Modal States
   const [isProductEditorOpen, setIsProductEditorOpen] = useState(false);
@@ -345,10 +330,15 @@ export default function App() {
 
   // Update CMS Page Handler
   const handleUpdateCmsPage = (updatedPage: CmsPageData) => {
-    setCmsPages((prev) => ({
-      ...prev,
-      [updatedPage.id]: updatedPage,
-    }));
+    setCmsPages((prev) => {
+      const nextPages = {
+        ...prev,
+        [updatedPage.id]: updatedPage,
+      };
+      savePersistentData('rivauto_cms_pages', nextPages);
+      saveServerCatalog({ rivauto_cms_pages: nextPages });
+      return nextPages;
+    });
   };
 
   // Update Brand Handler
