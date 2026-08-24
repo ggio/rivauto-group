@@ -16,11 +16,17 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const CATALOG_FILE = path.join(DATA_DIR, 'catalog.json');
+const UPLOADS_DIR = path.join(process.cwd(), 'uploads');
 
-// Ensure data directory exists
+// Ensure data and uploads directories exist
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
 }
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
+
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 // ─── Global Catalog Sync Endpoints ───────────────────────────────────────────
 app.get('/api/catalog', async (_req, res) => {
@@ -136,12 +142,18 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
     const folder = (req.body.folder as string) || 'rivauto';
 
-    // Check if Cloudinary is configured
+    // Check if Cloudinary is configured; if not, save to local uploads directory
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      // Fallback: return a placeholder if Cloudinary not configured yet
-      return res.status(503).json({
-        success: false,
-        error: 'Cloudinary не настроен. Добавьте переменные окружения CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET в Render.com.',
+      const ext = path.extname(req.file.originalname) || '.jpg';
+      const filename = `img_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${ext}`;
+      const filePath = path.join(UPLOADS_DIR, filename);
+      fs.writeFileSync(filePath, req.file.buffer);
+      const fileUrl = `/uploads/${filename}`;
+      console.log(`[Upload] Image saved to local server disk: ${fileUrl}`);
+      return res.json({
+        success: true,
+        url: fileUrl,
+        public_id: filename,
       });
     }
 

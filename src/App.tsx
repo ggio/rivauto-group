@@ -183,15 +183,25 @@ export default function App() {
           }
 
           if (effectiveCms) {
-            setCmsPages((prev) => ({
-              ...BACKUP_CMS,
-              ...prev,
-              ...effectiveCms,
-              about: {
-                ...(effectiveCms.about || BACKUP_CMS.about),
-                articles: BACKUP_CMS.about.articles
-              }
-            }));
+            setCmsPages((prev) => {
+              const serverAbout = effectiveCms.about || cms?.about;
+              const mergedAbout = serverAbout ? {
+                ...BACKUP_CMS.about,
+                ...serverAbout,
+                articles: (serverAbout.articles && Array.isArray(serverAbout.articles) && serverAbout.articles.length > 0)
+                  ? serverAbout.articles
+                  : (cms?.about?.articles && Array.isArray(cms.about.articles) && cms.about.articles.length > 0)
+                    ? cms.about.articles
+                    : BACKUP_CMS.about.articles
+              } : BACKUP_CMS.about;
+
+              return {
+                ...BACKUP_CMS,
+                ...prev,
+                ...effectiveCms,
+                about: mergedAbout,
+              };
+            });
           }
           if (leads && Array.isArray(leads)) setWholesaleLeads(leads);
           setIsHydrated(true);
@@ -208,6 +218,44 @@ export default function App() {
       isMounted = false;
     };
   }, []);
+
+  // Periodic background sync with server catalog to pull changes made from other devices
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const syncWithServer = async () => {
+      try {
+        const serverCatalog = await loadServerCatalog();
+        if (!serverCatalog) return;
+
+        if (serverCatalog.rivauto_cms_pages) {
+          setCmsPages((prev) => ({ ...prev, ...serverCatalog.rivauto_cms_pages }));
+        }
+        if (serverCatalog.luxor_categories && Array.isArray(serverCatalog.luxor_categories) && serverCatalog.luxor_categories.length > 0) {
+          setCategoriesList(serverCatalog.luxor_categories);
+        }
+        if (serverCatalog.luxor_parts_list && Array.isArray(serverCatalog.luxor_parts_list) && serverCatalog.luxor_parts_list.length > 0) {
+          setPartsList(serverCatalog.luxor_parts_list);
+        }
+        if (serverCatalog.rivauto_brands && Array.isArray(serverCatalog.rivauto_brands) && serverCatalog.rivauto_brands.length > 0) {
+          setBrandsList(serverCatalog.rivauto_brands);
+        }
+        if (serverCatalog.rivauto_theme_settings) {
+          setAppearanceSettings((prev) => ({ ...prev, ...serverCatalog.rivauto_theme_settings }));
+        }
+      } catch (e) {
+        console.warn('Background server sync error:', e);
+      }
+    };
+
+    const interval = setInterval(syncWithServer, 15000);
+    window.addEventListener('focus', syncWithServer);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', syncWithServer);
+    };
+  }, [isHydrated]);
 
   // Modal States
   const [isProductEditorOpen, setIsProductEditorOpen] = useState(false);
