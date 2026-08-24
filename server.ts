@@ -100,7 +100,20 @@ app.post('/api/catalog', (req, res) => {
     try {
       const initialDataPath = path.join(process.cwd(), 'src', 'data', 'initialData.ts');
       if (fs.existsSync(initialDataPath)) {
-        const initialDataObj = {
+        const sanitizeBase64 = (o: any): any => {
+          if (!o || typeof o !== 'object') return o;
+          const copy: any = Array.isArray(o) ? [...o] : { ...o };
+          for (let k in copy) {
+            if (typeof copy[k] === 'string' && copy[k].startsWith('data:image/')) {
+              copy[k] = '/assets/site-images/warehouse_banner.jpg';
+            } else if (typeof copy[k] === 'object') {
+              copy[k] = sanitizeBase64(copy[k]);
+            }
+          }
+          return copy;
+        };
+
+        const initialDataObj = sanitizeBase64({
           timestamp: new Date().toISOString(),
           version: '1.0.0',
           themeSettings: updated.rivauto_theme_settings || {},
@@ -108,7 +121,8 @@ app.post('/api/catalog', (req, res) => {
           luxor_categories: updated.luxor_categories || [],
           rivauto_brands: updated.rivauto_brands || [],
           rivauto_cms_pages: updated.rivauto_cms_pages || {},
-        };
+        });
+
         const tsInitialContent = `export const INITIAL_FULL_BACKUP_DATA = ${JSON.stringify(initialDataObj, null, 2)};\n`;
         fs.writeFileSync(initialDataPath, tsInitialContent, 'utf-8');
         console.log('[Code Persistence] Successfully updated src/data/initialData.ts directly in source code!');
@@ -116,6 +130,7 @@ app.post('/api/catalog', (req, res) => {
     } catch (initErr) {
       console.error('Error writing to initialData.ts:', initErr);
     }
+
 
     // Async backup to Cloudinary raw storage for permanent cross-device persistence
     if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
