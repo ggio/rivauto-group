@@ -17,6 +17,7 @@ import { ScreenshotsGalleryModal } from './components/ScreenshotsGalleryModal';
 import { MOCK_PARTS, LUXOR_CATEGORIES } from './data/mockParts';
 import { INITIAL_BRANDS } from './data/mockBrands';
 import { INITIAL_CMS_PAGES } from './data/mockCmsPages';
+import { ENGINE_BASE64_IMAGE } from './data/engineB64';
 import { LuxorPart, VehicleSelection, BrandItem } from './types/catalog';
 import { CmsPageData } from './types/cms';
 import { SiteAppearanceSettings, DEFAULT_APPEARANCE_SETTINGS, WholesaleLead } from './types/theme';
@@ -144,7 +145,7 @@ export default function App() {
               const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
               let activeImage = c.imageUrl || backupMatch?.imageUrl || localMatch?.imageUrl;
               if (c.slug === 'radiators' || c.id === 'radiators' || c.name.includes('Двигатель')) {
-                activeImage = 'https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp';
+                activeImage = ENGINE_BASE64_IMAGE;
               }
               return {
                 ...(backupMatch || {}),

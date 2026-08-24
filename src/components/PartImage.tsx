@@ -1,4 +1,5 @@
 import React from 'react';
+import { ENGINE_BASE64_IMAGE } from '../data/engineB64';
 
 interface PartImageProps {
   type?: string;
@@ -14,6 +15,19 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
 
   const effectiveImageUrl = imageUrl || part?.imageUrl;
   const effectiveType = type || (part ? `${part.category || ''} ${part.type || ''} ${part.title || ''}` : '');
+  const normType = (effectiveType || '').toLowerCase();
+
+  // 1. RADIATOR / ENGINE (Двигатель и навесное оборудование — ALWAYS RENDER EMBEDDED BASE64 PHOTO)
+  if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
+    return (
+      <img
+        src={ENGINE_BASE64_IMAGE}
+        alt={alt}
+        className={className}
+        loading="eager"
+      />
+    );
+  }
 
   // Reset error state if imageUrl changes
   React.useEffect(() => {
@@ -29,23 +43,6 @@ export const PartImage: React.FC<PartImageProps> = ({ type, imageUrl, part, clas
         className={className}
         loading="eager"
         onError={() => setImgError(true)}
-      />
-    );
-  }
-
-  const normType = (effectiveType || '').toLowerCase();
-
-  // 1. RADIATOR / ENGINE (Двигатель и навесное оборудование)
-  if (normType.includes('radiator') || normType.includes('радиатор') || normType.includes('двигател') || normType.includes('навесно')) {
-    return (
-      <img
-        src="https://res.cloudinary.com/iupbflicf/image/upload/v1787570733/%D0%94%D0%B2%D0%B8%D0%B3%D0%B0%D1%82%D0%B5%D0%BB%D1%8C.webp"
-        alt={alt}
-        className={className}
-        loading="eager"
-        onError={(e) => {
-          (e.target as HTMLImageElement).src = "/assets/site-images/Каталог групп/элементы_двигателя_60КБ.webp";
-        }}
       />
     );
   }
