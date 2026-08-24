@@ -186,11 +186,29 @@ const upload = multer({
 // ─── Image Upload Endpoint ───────────────────────────────────────────────────
 app.post('/api/upload', upload.single('file'), async (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, error: 'Файл не получен.' });
+    const folder = (req.body?.folder as string) || 'rivauto';
+
+    // 1. Handle JSON base64 payload if req.file is missing
+    if (!req.file && req.body && (req.body.file || req.body.image)) {
+      const base64Data = req.body.file || req.body.image;
+      if (typeof base64Data === 'string' && base64Data.startsWith('data:image/')) {
+        const matches = base64Data.match(/^data:image\/([a-zA-Z0-9]+);base64,(.+)$/);
+        if (matches) {
+          const ext = '.' + matches[1];
+          const buffer = Buffer.from(matches[2], 'base64');
+          const filename = `img_${Date.now()}_${Math.random().toString(36).substring(2, 8)}${ext}`;
+          const filePath = path.join(UPLOADS_DIR, filename);
+          fs.writeFileSync(filePath, buffer);
+          const fileUrl = `/uploads/${filename}`;
+          return res.json({ success: true, url: fileUrl, public_id: filename });
+        }
+      }
+      return res.json({ success: true, url: base64Data });
     }
 
-    const folder = (req.body.folder as string) || 'rivauto';
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'Файл или изображение не передано.' });
+    }
 
     // Check if Cloudinary is configured; if not, save to local uploads directory
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {

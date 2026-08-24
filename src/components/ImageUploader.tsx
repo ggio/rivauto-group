@@ -43,9 +43,12 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     setErrorMsg('');
 
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('folder', folder);
+      const base64Data = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
 
       // Simulate progress while uploading
       const progressInterval = setInterval(() => {
@@ -54,7 +57,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
       const response = await fetch('/api/upload', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          file: base64Data,
+          folder: folder,
+        }),
       });
 
       clearInterval(progressInterval);
