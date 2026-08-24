@@ -7,7 +7,6 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "name": "Все категории",
     "slug": "all",
     "count": 12400,
-    "imageUrl": "/cat_engine.jpg"
   },
   {
     "id": "radiators",
@@ -15,7 +14,7 @@ export const LUXOR_CATEGORIES: CategoryItem[] = [
     "slug": "radiators",
     "count": 2334,
     "imageType": "radiator",
-    "imageUrl": "/cat_engine.jpg"
+    "imageUrl": "https://res.cloudinary.com/iupbflicf/image/upload/v1787222973/1.webp"
   },
   {
     "id": "water-pumps",

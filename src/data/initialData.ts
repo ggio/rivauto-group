@@ -942,7 +942,7 @@ export const INITIAL_FULL_BACKUP_DATA = {
       "slug": "radiators",
       "count": 2334,
       "imageType": "radiator",
-      "imageUrl": "/assets/site-images/warehouse_banner.jpg"
+      "imageUrl": "https://res.cloudinary.com/iupbflicf/image/upload/v1787222973/1.webp"
     },
     {
       "id": "water-pumps",
