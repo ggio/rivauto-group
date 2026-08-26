@@ -46,28 +46,7 @@ export default function App() {
   // Appearance & Design Customization State
   const [appearanceSettings, setAppearanceSettings] = useState<SiteAppearanceSettings>(() => {
     const loaded = syncLoadPersistentData('rivauto_theme_settings', BACKUP_THEME);
-    const merged = { ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...loaded };
-    if (!merged.heroBannerBgUrl || merged.heroBannerBgUrl.includes('warehouse_banner')) {
-      merged.heroBannerBgUrl = '/assets/site-images/Главный банер/b5ea1a37-4e7c-4694-a9e1-a3504d0d71b3.png';
-      merged.heroBannerOpacity = 100;
-      merged.heroBannerOverlayDarkness = 0;
-      merged.hideHeroStats = true;
-      merged.hideHeroBadge = true;
-      merged.hideHeroSubheadline = true;
-      merged.heroTextAlignment = 'right';
-    }
-    if (merged.heroLogoUrl?.includes('warehouse_banner')) {
-      merged.heroLogoUrl = '';
-    }
-    if (Math.abs(merged.heroTextOffsetX || 0) > 300) {
-      merged.heroTextOffsetX = 0;
-      merged.heroTextOffsetY = 0;
-      merged.heroSearchOffsetX = 0;
-      merged.heroSearchOffsetY = 0;
-      merged.heroLogoOffsetX = 0;
-      merged.heroLogoOffsetY = 0;
-    }
-    return merged;
+    return { ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...loaded };
   });
   const [isThemeEditorOpen, setIsThemeEditorOpen] = useState(false);
   const [isScreenshotsModalOpen, setIsScreenshotsModalOpen] = useState(false);
