@@ -122,7 +122,17 @@ export default function App() {
 
   // Local Storage & IndexedDB Persistent Categories
   const [categoriesList, setCategoriesList] = useState<CategoryItem[]>(() => {
-    return syncLoadPersistentData('luxor_categories', BACKUP_CATS);
+    const loaded = syncLoadPersistentData('luxor_categories', BACKUP_CATS);
+    if (!loaded || !Array.isArray(loaded) || loaded.length === 0) return BACKUP_CATS;
+    return loaded.map((c) => {
+      const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
+      const validImage = (c.imageUrl && !c.imageUrl.startsWith('/cat_')) ? c.imageUrl : backupMatch?.imageUrl;
+      return {
+        ...(backupMatch || {}),
+        ...c,
+        imageUrl: validImage,
+      };
+    });
   });
 
   // Asynchronously hydrate from Server API & IndexedDB on mount
@@ -154,10 +164,9 @@ export default function App() {
           if (effectiveCats && Array.isArray(effectiveCats) && effectiveCats.length > 0) {
             const mergedCats = effectiveCats.map((c) => {
               const backupMatch = BACKUP_CATS.find((b) => b.id === c.id || b.slug === c.slug);
-              const localMatch = cats?.find((lc) => lc.id === c.id || lc.slug === c.slug);
-              let activeImage = c.imageUrl || backupMatch?.imageUrl || localMatch?.imageUrl;
-              if (c.slug === 'radiators' || c.id === 'radiators' || c.name.includes('Двигатель')) {
-                activeImage = ENGINE_BASE64_IMAGE;
+              let activeImage = (c.imageUrl && !c.imageUrl.startsWith('/cat_')) ? c.imageUrl : backupMatch?.imageUrl;
+              if (c.slug === 'radiators' || c.id === 'radiators') {
+                activeImage = backupMatch?.imageUrl || ENGINE_BASE64_IMAGE;
               }
               return {
                 ...(backupMatch || {}),
