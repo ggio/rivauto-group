@@ -539,6 +539,25 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
               <button
                 type="button"
                 onClick={() => {
+                  const url = prompt('Вставьте прямую ссылку (URL) на фоновое изображение баннера:', appearanceSettings?.heroBannerBgUrl || '');
+                  if (url !== null && onUpdateAppearanceSettings) {
+                    onUpdateAppearanceSettings({
+                      heroBannerBgUrl: url.trim(),
+                      heroBannerOpacity: 100,
+                      heroBannerOverlayDarkness: 0,
+                    });
+                  }
+                }}
+                className="bg-sky-600 hover:bg-sky-500 text-white font-mono text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-lg flex items-center space-x-1.5 transition cursor-pointer"
+                title="Вставить ссылку (URL) на фоновое изображение баннера"
+              >
+                <Link2 className="w-4 h-4 text-white" />
+                <span>🔗 Ссылка на баннер (URL)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
                   const newText = prompt('Введите ваш заголовок для главного баннера:', appearanceSettings?.heroHeadline || '');
                   if (newText !== null && onUpdateAppearanceSettings) {
                     onUpdateAppearanceSettings({ heroHeadline: newText });

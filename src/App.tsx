@@ -47,6 +47,11 @@ export default function App() {
   const [appearanceSettings, setAppearanceSettings] = useState<SiteAppearanceSettings>(() => {
     const loaded = syncLoadPersistentData('rivauto_theme_settings', BACKUP_THEME);
     const merged = { ...DEFAULT_APPEARANCE_SETTINGS, ...BACKUP_THEME, ...loaded };
+    if (!merged.heroBannerBgUrl || merged.heroBannerBgUrl.includes('warehouse_banner')) {
+      merged.heroBannerBgUrl = 'https://res.cloudinary.com/iupbflicf/image/upload/v1787720759/ChatGPT_Image_7_%D0%B0%D0%B2%D0%B3._2026_%D0%B3._10_00_05_4.png';
+      merged.heroBannerOpacity = 100;
+      merged.heroBannerOverlayDarkness = 0;
+    }
     if (merged.heroLogoUrl?.includes('warehouse_banner')) {
       merged.heroLogoUrl = '';
     }

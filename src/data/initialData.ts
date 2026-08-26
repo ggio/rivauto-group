@@ -17,7 +17,7 @@ export const INITIAL_FULL_BACKUP_DATA = {
     "topNoticeText": "",
     "heroHeadline": "ТОРГОВО-\nТРАНСПОРТНАЯ\nКОМПАНИЯ",
     "heroSubheadline": "",
-    "heroBannerBgUrl": "",
+    "heroBannerBgUrl": "https://res.cloudinary.com/iupbflicf/image/upload/v1787720759/ChatGPT_Image_7_%D0%B0%D0%B2%D0%B3._2026_%D0%B3._10_00_05_4.png",
     "heroBannerOpacity": 100,
     "heroBannerOverlayDarkness": 0,
     "hideHeroSearch": false,
