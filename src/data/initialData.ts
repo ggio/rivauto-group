@@ -949,77 +949,88 @@ export const INITIAL_FULL_BACKUP_DATA = {
       "name": "Элементы топливной системы",
       "slug": "water-pumps",
       "count": 514,
-      "imageType": "waterpump"
+      "imageType": "waterpump",
+      "imageUrl": "/assets/site-images/Каталог групп/4f6196da-9590-4d40-9b53-2a3ca8d039ea.png"
     },
     {
       "id": "fans",
       "name": "Детали подвески",
       "slug": "fans",
       "count": 1111,
-      "imageType": "fan"
+      "imageType": "fan",
+      "imageUrl": "/assets/site-images/Каталог групп/5f78c607-af81-4727-afc6-aa49b7b621b6.png"
     },
     {
       "id": "thermostats",
       "name": "Детали тормозной системы",
       "slug": "thermostats",
       "count": 501,
-      "imageType": "thermostat"
+      "imageType": "thermostat",
+      "imageUrl": "/assets/site-images/Каталог групп/47beceda-4c1e-4e3a-a483-ed96db31f2c7.png"
     },
     {
       "id": "cooling-comp",
       "name": "Детали трансмиссии",
       "slug": "cooling-comp",
       "count": 713,
-      "imageType": "thermostat"
+      "imageType": "thermostat",
+      "imageUrl": "/assets/site-images/Каталог групп/b4736375-dfaa-4902-8689-1f76e4cc3f60.png"
     },
     {
       "id": "ac-compressors",
       "name": "Элементы рулевого управления",
       "slug": "ac-compressors",
       "count": 424,
-      "imageType": "compressor"
+      "imageType": "compressor",
+      "imageUrl": "/assets/site-images/Каталог групп/ec117487-0627-45e3-a1e5-597745bfa625.png"
     },
     {
       "id": "ac-comp",
       "name": "Система отопления и вентиляции",
       "slug": "ac-comp",
       "count": 182,
-      "imageType": "compressor"
+      "imageType": "compressor",
+      "imageUrl": "/assets/site-images/Каталог групп/5008be08-29e6-4a5b-aef3-9e6cbe675935.png"
     },
     {
       "id": "air-compressors",
       "name": "Система охлаждения",
       "slug": "air-compressors",
       "count": 59,
-      "imageType": "compressor"
+      "imageType": "compressor",
+      "imageUrl": "/assets/site-images/Каталог групп/daced6af-3a3b-44a3-8fd2-0266ad2d4d38.png"
     },
     {
       "id": "power-steering",
       "name": "Система смазки",
       "slug": "power-steering",
       "count": 133,
-      "imageType": "waterpump"
+      "imageType": "waterpump",
+      "imageUrl": "/assets/site-images/Каталог групп/ebddcc10-de38-4025-b0f5-3037aea93183.png"
     },
     {
       "id": "turbo",
       "name": "Электрооборудование",
       "slug": "turbo",
       "count": 225,
-      "imageType": "turbo"
+      "imageType": "turbo",
+      "imageUrl": "/assets/site-images/Каталог групп/eca4fa48-1f72-49ef-a45c-1f0f6659500d.png"
     },
     {
       "id": "filtration",
       "name": "Освещение",
       "slug": "filtration",
       "count": 1177,
-      "imageType": "filter"
+      "imageType": "filter",
+      "imageUrl": "/assets/site-images/Каталог групп/b9b7b0d2-4e02-4208-b91a-728c63e098fa.png"
     },
     {
       "id": "gaskets",
       "name": "Система очистки стекол и фар",
       "slug": "gaskets",
       "count": 416,
-      "imageType": "gasket"
+      "imageType": "gasket",
+      "imageUrl": "/assets/site-images/Каталог групп/01ad9d76-0e13-4489-bc5a-247fd4d4d3bd.png"
     }
   ],
   "rivauto_brands": [

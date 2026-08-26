@@ -108,6 +108,27 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
   const [showLogoUrlModal, setShowLogoUrlModal] = useState(false);
   const [logoUrlInput, setLogoUrlInput] = useState(appearanceSettings?.heroLogoUrl || '');
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const bannerFileInputRef = React.useRef<HTMLInputElement>(null);
+
+  const handleBannerBgFileSelected = (file: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('Пожалуйста, выберите файл изображения (PNG, JPG, WEBP)');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      if (dataUrl && onUpdateAppearanceSettings) {
+        onUpdateAppearanceSettings({
+          heroBannerBgUrl: dataUrl,
+          heroBannerOpacity: 100,
+          heroBannerOverlayDarkness: 0,
+        });
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleImageFileSelected = (file: File) => {
     if (!file) return;
@@ -488,6 +509,63 @@ export const BrandLanding: React.FC<BrandLandingProps> = ({
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 z-0">
               <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            </div>
+          )}
+
+          {/* Admin Hero Banner Upload & Text Controls (Top-Left Corner) */}
+          {isAdmin && (
+            <div className="absolute top-3 left-3 z-30 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => bannerFileInputRef.current?.click()}
+                className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-mono text-xs font-black px-3.5 py-1.5 rounded-xl shadow-lg flex items-center space-x-1.5 transition cursor-pointer"
+                title="Загрузить собственную фоновую картинку баннера с компьютера"
+              >
+                <Upload className="w-4 h-4 text-slate-950" />
+                <span>📁 Загрузить свой баннер</span>
+              </button>
+              <input
+                type="file"
+                ref={bannerFileInputRef}
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleBannerBgFileSelected(file);
+                  e.target.value = '';
+                }}
+              />
+
+              <button
+                type="button"
+                onClick={() => {
+                  const newText = prompt('Введите ваш заголовок для главного баннера:', appearanceSettings?.heroHeadline || '');
+                  if (newText !== null && onUpdateAppearanceSettings) {
+                    onUpdateAppearanceSettings({ heroHeadline: newText });
+                  }
+                }}
+                className="bg-slate-900/90 hover:bg-slate-800 text-white border border-slate-700 font-mono text-xs font-bold px-3 py-1.5 rounded-xl shadow-lg flex items-center space-x-1.5 transition backdrop-blur-md cursor-pointer"
+                title="Изменить текст заголовка баннера"
+              >
+                <Edit2 className="w-3.5 h-3.5 text-amber-400" />
+                <span>✏️ Изменить текст</span>
+              </button>
+
+              {appearanceSettings?.heroBannerBgUrl && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (onUpdateAppearanceSettings) {
+                      onUpdateAppearanceSettings({ heroBannerBgUrl: '' });
+                    }
+                  }}
+                  className="bg-rose-900/80 hover:bg-rose-800 text-rose-200 border border-rose-700/50 font-mono text-xs font-bold px-2.5 py-1.5 rounded-xl shadow-lg flex items-center space-x-1 transition backdrop-blur-md cursor-pointer"
+                  title="Удалить фоновую картинку баннера"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                  <span>Удалить фон</span>
+                </button>
+              )}
             </div>
           )}
 
